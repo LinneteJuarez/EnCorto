@@ -1,0 +1,207 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  height: 100vh;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: flex-end;
+  height: 64px;
+  background: white;
+  border: 2px solid black;
+  border-bottom: 5px solid black;
+  position: relative;
+  z-index: 20;
+}
+
+#logo {
+  padding: 0 20px;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  padding-right: 12px;
+  flex-direction: row-reverse;
+}
+
+/* TABS */
+.tab {
+  width: 140px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid black;
+  border-bottom: none;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 6px;
+  margin-left: -2px;
+  margin-right: 6px;
+  position: relative;
+}
+
+/* TAB COLORES */
+.tab[data-tab="inicio"] { background:#FFD700; }
+.tab[data-tab="hoy"] { background:#8073C7; }
+.tab[data-tab="juegos"] { background:#00E5E5; }
+.tab[data-tab="foro"] { background:#FF6C54; }
+.tab[data-tab="funding"] { background:#FF00A8; }
+.tab[data-tab="archivo"] { background:#80DE73; }
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: 6px;
+  background: inherit;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  z-index: 20;
+}
+
+main {
+  height: calc(100vh - 64px);
+  position: relative;
+  z-index: 10;
+}
+
+#panel-inicio { background:#FFD700; }
+#panel-hoy { background:#8073C7; }
+#panel-juegos { background:#00E5E5; }
+#panel-foro { background:#FF6C54; }
+#panel-funding { background:#FF00A8; }
+#panel-archivo { background:#80DE73; }
+
+.panel {
+  display: none;
+  height: 100%;
+  padding: 40px;
+  border: 2px solid black;
+  border-top: none;
+}
+
+.panel.active { display:block; }
+
+.tab.active::after {
+  content:"";
+  position:absolute;
+  left:-2px;
+  right:-2px;
+  bottom:-5px;
+  height:7px;
+  background: inherit;
+  border-left:2px solid black;
+  border-right:2px solid black;
+  z-index: 5;
+}
+
+/* CONTENIDOS */
+.subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.subtab {
+  background: white;
+  border: 2px solid black;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.subtab.active {
+  background: black;
+  color: white;
+}
+
+.subpanel { display:none; }
+.subpanel.active { display:block; }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:20px;
+}
+
+.news-card {
+  background: white;
+  border: 2px solid black;
+  height: 180px;
+}
+
+.games-grid {
+  display:flex;
+  gap:24px;
+}
+
+.game-card {
+  flex:1;
+  background:white;
+  border:2px solid black;
+  height:260px;
+}
+
+.funding-layout {
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:24px;
+}
+
+.shop {
+  display:flex;
+  gap:20px;
+}
+
+.item {
+  flex:1;
+  background:white;
+  border:2px solid black;
+  height:200px;
+}
+
+.donation {
+  background:white;
+  border:2px solid black;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.donation textarea {
+  resize: none;
+  height: 120px;
+  border: 2px solid black;
+  padding: 8px;
+  font-family: inherit;
+}
+
+.forum-section {
+  background:white;
+  border:2px solid black;
+  height:300px;
+}
+
+.inicio {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
