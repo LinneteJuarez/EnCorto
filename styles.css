@@ -4,15 +4,23 @@
   padding: 0;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: Helvetica, Arial, sans-serif;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  min-height: 100dvh;
 }
 
 /* HEADER */
 header {
   display: flex;
   align-items: flex-end;
+  flex-shrink: 0;
   height: 64px;
   background: white;
   border: 2px solid black;
@@ -22,7 +30,7 @@ header {
 }
 
 #logo {
-  padding: 0 20px;
+  padding: 0 10px;
   font-weight: bold;
 }
 
@@ -60,23 +68,13 @@ nav {
 .tab[data-tab="funding"] { background:#FF00A8; }
 .tab[data-tab="archivo"] { background:#80DE73; }
 
-.tab.active::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: -2px;
-  width: calc(100% + 4px);
-  height: 6px;
-  background: inherit;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-  z-index: 20;
-}
-
 main {
-  height: calc(100vh - 64px);
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 10;
+  min-height: 0;
 }
 
 #panel-inicio { background:#FFD700; }
@@ -88,25 +86,31 @@ main {
 
 .panel {
   display: none;
-  height: 100%;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
   padding: 40px;
   border: 2px solid black;
   border-top: none;
 }
 
-.panel.active { display:block; }
+.panel.active {
+  display: flex;
+  flex-direction: column;
+}
 
 .tab.active::after {
-  content:"";
-  position:absolute;
-  left:-2px;
-  right:-2px;
-  bottom:-5px;
-  height:7px;
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -5px;
+  height: 7px;
   background: inherit;
-  border-left:2px solid black;
-  border-right:2px solid black;
-  z-index: 5;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  z-index: 20;
 }
 
 /* CONTENIDOS */
@@ -199,9 +203,152 @@ main {
 }
 
 .inicio {
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  min-height: 0;
+}
+
+/* ================================
+   RESPONSIVE (contenedores existentes)
+   ================================ */
+
+@media (max-width: 1024px) {
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    min-height: 64px;
+    /* Pestañas alineadas al borde inferior del header (misma línea que el borde grueso) */
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  #logo {
+    padding: 8px 12px 8px 16px;
+  }
+
+  #logo img {
+    max-width: min(100px, 28vw);
+    height: auto;
+  }
+
+  nav {
+    width: 100%;
+    margin-left: 0;
+    /* Sin padding inferior: era el “hueco” entre tabs y el panel de color */
+    padding: 6px 8px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+    align-items: flex-end;
+  }
+
+  .tab {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 88px;
+    max-width: 140px;
+    height: 40px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+  }
+
+  .panel {
+    padding: 24px 16px;
+  }
+
+  .subtabs {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .subtab {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .news-card {
+    min-height: 160px;
+    height: auto;
+  }
+
+  .games-grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .game-card {
+    flex: none;
+    min-height: 200px;
+    height: auto;
+  }
+
+  .funding-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .shop {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .item {
+    flex: none;
+    min-height: 180px;
+    height: auto;
+  }
+
+  .forum-section {
+    min-height: 220px;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    padding: 16px 12px;
+  }
+
+  .tab {
+    min-width: 72px;
+    font-size: 0.75rem;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 4px;
+  }
+
+  .inicio h1 {
+    font-size: clamp(1.35rem, 6vw, 1.75rem);
+  }
+
+  .inicio p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .panel {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .inicio {
+    min-height: unset;
+    padding: 8px;
+  }
 }
