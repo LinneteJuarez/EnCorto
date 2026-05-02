@@ -1,3 +1,39 @@
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueBlack.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueMedium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('public/fonts/HelveticaNeueThin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,14 +42,25 @@
 
 html {
   height: 100%;
+  min-width: 0;
 }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: HelveticaNeue;
   display: flex;
   flex-direction: column;
   min-height: 100%;
   min-height: 100dvh;
+  min-width: 0;
+}
+
+.layout-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
 }
 
 /* HEADER */
@@ -21,7 +68,11 @@ header {
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
-  height: 64px;
+  min-height: 64px;
+  height: auto;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   background: white;
   border: 2px solid black;
   border-bottom: 5px solid black;
@@ -32,6 +83,19 @@ header {
 #logo {
   padding: 0 10px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+#logo img {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: min(220px, 42vw);
+  object-fit: contain;
+  object-position: left center;
 }
 
 nav {
@@ -40,12 +104,22 @@ nav {
   margin-left: auto;
   padding-right: 12px;
   flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 4px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* TABS */
 .tab {
-  width: 140px;
-  height: 42px;
+  flex: 1 1 auto;
+  min-width: 177px;
+  max-width: 200px;
+  width: auto;
+  min-height: 42px;
+  height: auto;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,13 +142,16 @@ nav {
 .tab[data-tab="funding"] { background:#FF00A8; }
 .tab[data-tab="archivo"] { background:#80DE73; }
 
-main {
+.layout-root > main {
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 10;
   min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 #panel-inicio { background:#FFD700; }
@@ -224,47 +301,128 @@ main {
 }
 
 @media (max-width: 768px) {
-  header {
-    height: auto;
-    min-height: 64px;
-    /* Pestañas alineadas al borde inferior del header (misma línea que el borde grueso) */
-    align-items: flex-end;
-    flex-wrap: wrap;
+  /* Cuadrícula: logo a ancho completo; contenido a la izquierda, pestañas
+     en columna estrecha a la derecha (header display:contents expone
+     #logo y nav como hijos directos de la cuadrícula). */
+  .layout-root {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(72px, 96px);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      "brand brand"
+      "main  tabs";
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
   }
 
-  #logo {
-    padding: 8px 12px 8px 16px;
+  .layout-root > header {
+    display: contents;
   }
 
-  #logo img {
-    max-width: min(100px, 28vw);
-    height: auto;
-  }
-
-  nav {
+  .layout-root #logo {
+    grid-area: brand;
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    padding: 6px 10px;
+    background: white;
+    border: 2px solid black;
+    box-sizing: border-box;
     width: 100%;
-    margin-left: 0;
-    /* Sin padding inferior: era el “hueco” entre tabs y el panel de color */
-    padding: 6px 8px 0;
-    overflow-x: auto;
+  }
+
+  .layout-root #logo img {
+    height: 32px;
+    max-width: min(200px, 75vw);
+  }
+
+  .layout-root > main {
+    grid-area: main;
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .layout-root nav {
+    grid-area: tabs;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
     flex-wrap: nowrap;
-    scrollbar-width: thin;
-    align-items: flex-end;
+    gap: 0;
+    margin: 0;
+    padding: 6px 5px 6px 0;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    max-height: 100%;
+    align-self: stretch;
+    background: transparent;
+    border: none;
+    border-top: none;
+    box-sizing: border-box;
   }
 
-  .tab {
-    flex: 0 0 auto;
-    width: auto;
-    min-width: 88px;
-    max-width: 140px;
-    height: 40px;
-    font-size: 0.8rem;
-    padding: 0 8px;
+  .layout-root .tab {
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0 0 -2px;
+    padding: 3px 5px 3px 4px;
+    border: 2px solid black;
+    border-bottom: none;
+    border-radius: 0 16px 6px 0;
+    font-size: clamp(0.48rem, 0.9vmin + 0.45rem, 0.65rem);
+    line-height: 1.08;
+    justify-content: center;
+    text-align: center;
+    overflow-wrap: anywhere;
+    position: relative;
+    z-index: 1;
   }
 
-  .panel {
-    padding: 24px 16px;
+  .layout-root .tab:nth-child(2) { z-index: 2; }
+  .layout-root .tab:nth-child(3) { z-index: 3; }
+  .layout-root .tab:nth-child(4) { z-index: 4; }
+  .layout-root .tab:nth-child(5) { z-index: 5; }
+  .layout-root .tab:nth-child(6) { z-index: 6; }
+
+  .layout-root .tab:last-child {
+    border-bottom: 2px solid black;
+    margin-bottom: -7px;
+    border-radius: 0 16px 6px 0;
+  }
+
+  .layout-root .tab.active::after {
+    display: block;
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: -2px;
+    bottom: -2px;
+    width: 7px;
+    background: inherit;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    z-index: 24;
+  }
+
+  .layout-root .tab.active {
+    z-index: 30;
+  }
+
+  .layout-root .panel {
+    padding: 20px 16px;
   }
 
   .subtabs {
@@ -321,15 +479,18 @@ main {
 }
 
 @media (max-width: 480px) {
+  .layout-root {
+    grid-template-columns: minmax(0, 1fr) minmax(68px, 92px);
+  }
+
   .panel {
     padding: 16px 12px;
   }
 
-  .tab {
-    min-width: 72px;
-    font-size: 0.75rem;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 4px;
+  .layout-root .tab {
+    font-size: clamp(0.45rem, 0.8vmin + 0.4rem, 0.6rem);
+    padding: 2px 4px 2px 3px;
+    border-radius: 0 12px 5px 0;
   }
 
   .inicio h1 {
