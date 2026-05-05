@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "noticias"
+    label: "Noticias"
+    folder: "content/noticias"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { name: "title", label: "Título", widget: "string" }
+      - { name: "date", label: "Fecha", widget: "datetime" }
+      - { name: "category", label: "Categoría", widget: "select", options: ["global","politica","economia","tec","deportes","espectaculos","felices"] }
+      - { name: "thumbnail", label: "Imagen", widget: "image", required: false }
+      - { name: "body", label: "Contenido", widget: "markdown" }
