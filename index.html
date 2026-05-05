@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>En Corto</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout-root">
+  <header>
+    <div id="logo">
+      <img src="/data/logo.svg" alt="En Corto" width="200" height="35" decoding="async" fetchpriority="high">
+    </div>
+
+    <nav aria-label="Secciones principales">
+      <button class="tab active" data-tab="inicio">●</button>
+      <button class="tab" data-tab="hoy">Lo de Hoy</button>
+      <button class="tab" data-tab="juegos">Juegos</button>
+      <button class="tab" data-tab="foro">Foro</button>
+      <button class="tab" data-tab="funding">Funding</button>
+      <button class="tab" data-tab="archivo">Archivo</button>
+    </nav>
+  </header>
+
+  <main>
+
+  <!-- INICIO -->
+  <section id="panel-inicio" class="panel active"></section>
+
+  <!-- LO DE HOY -->
+  <section id="panel-hoy" class="panel"></section>
+
+  <!-- JUEGOS -->
+  <section id="panel-juegos" class="panel"></section>
+    
+  <!-- FORO -->
+  <section id="panel-foro" class="panel">  </section>
+
+  <!-- FUNDING -->
+  <section id="panel-funding" class="panel">  </section>
+    
+  <!-- ARCHIVO -->
+  <section id="panel-archivo" class="panel">  </section>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
