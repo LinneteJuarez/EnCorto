@@ -2,6 +2,9 @@
    MAIN TABS (pestañas principales)
    ===================================================== */
 
+import {createClient} from '@sanity/client'
+import {toHTML} from '@portabletext/to-html'
+
 const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".panel");
 
@@ -132,10 +135,20 @@ loadPanel("inicio");
 
 
 /* =====================================================
-   NOTICIAS (Markdown + frontmatter) usando marked
+   NOTICIAS (Sanity + Portable Text)
    ===================================================== */
 
-const NOTICIAS_INDEX_URL = "content/noticias/index.json";
+const SANITY_PROJECT_ID = 'ayk2182b'
+const SANITY_DATASET = 'production'
+const SANITY_API_VERSION = '2026-05-06'
+
+const sanity = createClient({
+  projectId: SANITY_PROJECT_ID,
+  dataset: SANITY_DATASET,
+  apiVersion: SANITY_API_VERSION,
+  useCdn: true,
+})
+
 const CATEGORY_LABELS = {
   global: "Global",
   politica: "Política",
@@ -145,45 +158,6 @@ const CATEGORY_LABELS = {
   espectaculos: "Espectáculos",
   felices: "Noticias Felices"
 };
-
-function isMarkedAvailable() {
-  return typeof window !== "undefined" && typeof window.marked?.parse === "function";
-}
-
-function parseFrontmatter(markdownText) {
-  const text = markdownText.replace(/\r\n/g, "\n");
-  if (!text.startsWith("---\n")) return { data: {}, body: text };
-
-  const end = text.indexOf("\n---\n", 4);
-  if (end === -1) return { data: {}, body: text };
-
-  const raw = text.slice(4, end).trim();
-  const body = text.slice(end + "\n---\n".length);
-
-  const data = {};
-  for (const line of raw.split("\n")) {
-    const m = line.match(/^([^:]+):\s*(.*)$/);
-    if (!m) continue;
-    const key = m[1].trim();
-    let value = m[2].trim();
-    value = value.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
-    data[key] = value;
-  }
-
-  return { data, body };
-}
-
-async function fetchJson(url) {
-  const r = await fetch(url, { cache: "no-store" });
-  if (!r.ok) throw new Error(`No se pudo cargar ${url}`);
-  return await r.json();
-}
-
-async function fetchText(url) {
-  const r = await fetch(url, { cache: "no-store" });
-  if (!r.ok) throw new Error(`No se pudo cargar ${url}`);
-  return await r.text();
-}
 
 function formatDate(isoLike) {
   if (!isoLike) return "";
@@ -221,43 +195,41 @@ function buildExcerptFromText(text, maxLen = 120) {
   return `${clean.slice(0, maxLen - 1)}…`;
 }
 
-async function loadPost(mdPath) {
-  if (!isMarkedAvailable()) throw new Error("marked no está cargado");
-
-  const md = await fetchText(mdPath);
-  const { data, body } = parseFrontmatter(md);
-
-  const html = window.marked.parse(body);
-  const excerpt = data.excerpt || buildExcerptFromText(body);
-
-  return {
-    ...data,
-    category: data.category || "global",
-    title: data.title || "Sin título",
-    date: data.date || "",
-    thumbnail: data.thumbnail || "",
-    html,
-    excerpt
-  };
+function portableTextToPlainText(blocks) {
+  if (!Array.isArray(blocks)) return ''
+  return blocks
+    .flatMap((b) => {
+      if (b?._type !== 'block' || !Array.isArray(b.children)) return []
+      return b.children.map((c) => c?.text ?? '')
+    })
+    .join(' ')
 }
 
 async function loadNoticias() {
-  const index = await fetchJson(NOTICIAS_INDEX_URL);
-  const items = Array.isArray(index) ? index : (index?.items ?? []);
+  const query = `*[_type=="noticia"]|order(date desc){
+    _id,
+    title,
+    date,
+    category,
+    body,
+    "thumbnail": thumbnail.asset->url
+  }`
 
-  const loaded = [];
-  for (const it of items) {
-    const path = typeof it === "string" ? it : it?.path;
-    if (!path) continue;
-    try {
-      loaded.push(await loadPost(path));
-    } catch {
-      // saltar md roto/no encontrado
+  const items = await sanity.fetch(query)
+
+  return (Array.isArray(items) ? items : []).map((it) => {
+    const html = toHTML(it.body ?? [])
+    const excerpt = buildExcerptFromText(portableTextToPlainText(it.body ?? []))
+    return {
+      ...it,
+      title: it.title || 'Sin título',
+      date: it.date || '',
+      category: it.category || 'global',
+      thumbnail: it.thumbnail || '',
+      html,
+      excerpt,
     }
-  }
-
-  loaded.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  return loaded;
+  })
 }
 
 function groupByCategory(posts) {

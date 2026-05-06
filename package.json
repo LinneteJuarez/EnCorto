@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/LinneteJuarez/EnCorto#readme",
   "dependencies": {
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^7.22.0",
     "marked": "^18.0.3",
     "vite": "^8.0.10"
   },
