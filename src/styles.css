@@ -565,6 +565,13 @@ nav {
   flex-shrink: 0;
 }
 
+.news-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .news-thumb-label {
   font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
