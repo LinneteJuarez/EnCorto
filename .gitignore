@@ -13,3 +13,6 @@ Thumbs.db
 encortoAdmin/.env*
 
 .env
+
+# Vite build output
+dist/
