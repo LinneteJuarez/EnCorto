@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'encorto',
 
-  projectId: 'ayk2182b',
+  projectId: '1viy3uxj',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

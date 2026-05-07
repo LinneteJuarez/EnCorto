@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+# build artifacts (we keep dist/ tracked in this repo on purpose)
+.vite/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Sanity
+encortoAdmin/.env*
+
+.env

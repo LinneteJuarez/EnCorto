@@ -119,7 +119,8 @@ function loadPanel(name) {
       initSubtabs(panel);
 
       if (name === "hoy" || name === "archivo") {
-        renderNoticiasIntoPanel(panel, name).catch(() => {
+        renderNoticiasIntoPanel(panel, name).catch((err) => {
+          console.warn("[Sanity] No se pudieron cargar noticias:", err);
           // Si aún no hay noticias/configuración, dejamos el contenido estático del panel.
         });
       }
@@ -138,15 +139,20 @@ loadPanel("inicio");
    NOTICIAS (Sanity + Portable Text)
    ===================================================== */
 
-const SANITY_PROJECT_ID = 'ayk2182b'
-const SANITY_DATASET = 'production'
-const SANITY_API_VERSION = '2026-05-06'
+const SANITY_PROJECT_ID = import.meta?.env?.VITE_SANITY_PROJECT_ID || '1viy3uxj'
+const SANITY_DATASET = import.meta?.env?.VITE_SANITY_DATASET || 'production'
+const SANITY_API_VERSION = import.meta?.env?.VITE_SANITY_API_VERSION || '2026-05-06'
+
+const IS_LOCALHOST =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
 
 const sanity = createClient({
   projectId: SANITY_PROJECT_ID,
   dataset: SANITY_DATASET,
   apiVersion: SANITY_API_VERSION,
-  useCdn: true,
+  // In local dev we want fresh content right after publishing/migrating.
+  useCdn: !IS_LOCALHOST,
 })
 
 const CATEGORY_LABELS = {

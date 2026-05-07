@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "live-server"
+    "serve": "live-server",
+    "migrate:noticias": "node scripts/migrate-md-to-sanity.cjs"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
   "dependencies": {
     "@portabletext/to-html": "^5.0.2",
     "@sanity/client": "^7.22.0",
+    "dotenv": "^17.2.2",
+    "gray-matter": "^4.0.3",
     "marked": "^18.0.3",
     "vite": "^8.0.10"
   },
