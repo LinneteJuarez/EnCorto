@@ -1,38 +1,116 @@
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueBlack.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueBlack.otf') format('opentype');
   font-weight: 900;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueBold.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueBold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueLight.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueLight.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueMedium.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueMedium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueRegular.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueRoman.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'HelveticaNeue';
-  src: url('/fonts/HelveticaNeueThin.otf') format('opentype');
+  src: url('./fonts/HelveticaNeueThin.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueUltraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueHeavy.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic variants */
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueUltraLightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueLightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueMediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueBoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueHeavyItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeueBlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
 }
 * {
   box-sizing: border-box;
@@ -113,6 +191,9 @@ nav {
 
 /* TABS */
 .tab {
+  font-family: HelveticaNeue;
+  font-weight: 100;
+  font-style: normal;
   flex: 1 1 auto;
   min-width: 177px;
   max-width: 200px;
@@ -133,7 +214,6 @@ nav {
   margin-right: 6px;
   position: relative;
 }
-
 /* TAB COLORES */
 .tab[data-tab="inicio"] { background:#FFD700; }
 .tab[data-tab="hoy"] { background:#8073C7; }
@@ -141,6 +221,11 @@ nav {
 .tab[data-tab="foro"] { background:#FF6C54; }
 .tab[data-tab="funding"] { background:#FF00A8; }
 .tab[data-tab="archivo"] { background:#80DE73; }
+
+.tab:hover {
+  font-size: larger;
+  font-weight: 900;
+}
 
 .layout-root > main {
   flex: 1 1 0;
@@ -221,7 +306,7 @@ nav {
 }
 
 .news-empty {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.77);
   border: 2px dashed rgba(0, 0, 0, 0.35);
   padding: 14px 16px;
   font-weight: 700;
@@ -288,14 +373,100 @@ nav {
 }
 
 .inicio {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   text-align: center;
-  padding: 16px;
-  min-height: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: min(520px, 70vh);
+  cursor: pointer;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.upper, .lower {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 52.5%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upper {
+  top: 0;
+  align-items: flex-end;
+  background: #FFD700;
+  z-index: 3;
+}
+.upper span {
+  display: inline-block;
+  font-size: clamp(2.6rem, 6.5vw, 9rem);
+  font-weight: 900;
+  color: #FF00A8;
+  line-height: 1;
+  transform: translateY(50%); 
+  white-space: nowrap;
+  text-wrap: nowrap;
+  padding-inline: 16px;
+}
+
+.lower {
+  top: 52.5%;
+  align-items: flex-start;
+  background: #FFD700;
+  z-index: 3;
+}
+.lower span {
+  display: inline-block;
+  font-size: clamp(2.6rem, 6.5vw, 9rem);
+  font-weight: 900;
+  color: #FF00A8;
+  line-height: 1;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  text-wrap: nowrap;
+  padding-inline: 16px;
+}
+
+.inicio:hover .upper { transform: translateY(-45px); }
+.inicio:hover .lower { transform: translateY(30px); }
+
+.inside {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-style: italic;
+  color: #00E5E5;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s; 
+}
+.inicio:hover .inside { opacity: 1; }
+
+
+@keyframes inicioEnterX {
+  from { transform: translateX(-410%); opacity: 0.001; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes inicioExitX {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(110%);  opacity: 0.001; }
+}
+
+#panel-inicio.active .inicio.is-entering {
+  animation: inicioEnterX 1200ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+#panel-inicio.active .inicio.is-leaving {
+  animation: inicioExitX 1200ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 /* ================================

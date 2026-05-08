@@ -8,20 +8,56 @@ import {toHTML} from '@portabletext/to-html'
 const tabs = document.querySelectorAll('.tab')
 const panels = document.querySelectorAll('.panel')
 
+function getActivePanelName() {
+  const active = document.querySelector('.panel.active')
+  if (!active?.id?.startsWith('panel-')) return null
+  return active.id.slice('panel-'.length)
+}
+
+function runInicioEnter(panelEl) {
+  const inicioEl = panelEl?.querySelector?.('.inicio')
+  if (!inicioEl) return
+  inicioEl.classList.remove('is-leaving')
+  inicioEl.classList.add('is-entering')
+  const cleanup = () => inicioEl.classList.remove('is-entering')
+  inicioEl.addEventListener('animationend', cleanup, {once: true})
+}
+
 tabs.forEach((tab) => {
   tab.addEventListener('click', () => {
     const name = tab.dataset.tab
+    const current = getActivePanelName()
+    if (current === name) return
 
-    // activar tab
-    tabs.forEach((t) => t.classList.remove('active'))
-    tab.classList.add('active')
+    const doSwitch = () => {
+      // activar tab
+      tabs.forEach((t) => t.classList.remove('active'))
+      tab.classList.add('active')
 
-    // mostrar panel
-    panels.forEach((p) => p.classList.remove('active'))
-    document.getElementById(`panel-${name}`).classList.add('active')
+      // mostrar panel
+      panels.forEach((p) => p.classList.remove('active'))
+      const nextPanel = document.getElementById(`panel-${name}`)
+      nextPanel.classList.add('active')
 
-    // cargar contenido si hace falta
-    loadPanel(name)
+      // cargar contenido si hace falta
+      loadPanel(name)
+
+      if (name === 'inicio') runInicioEnter(nextPanel)
+    }
+
+    // Si salimos de INICIO, animamos antes de cambiar de panel.
+    if (current === 'inicio') {
+      const currentPanel = document.getElementById('panel-inicio')
+      const inicioEl = currentPanel?.querySelector?.('.inicio')
+      if (inicioEl) {
+        inicioEl.classList.remove('is-entering')
+        inicioEl.classList.add('is-leaving')
+        window.setTimeout(doSwitch, 420)
+        return
+      }
+    }
+
+    doSwitch()
   })
 })
 
@@ -117,6 +153,8 @@ function loadPanel(name) {
           // Si aún no hay noticias/configuración, dejamos el contenido estático del panel.
         })
       }
+
+      if (name === 'inicio') runInicioEnter(panel)
     })
 }
 
