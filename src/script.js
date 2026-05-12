@@ -4,6 +4,7 @@
 
 import {createClient} from '@sanity/client'
 import {toHTML} from '@portabletext/to-html'
+import {initJuegosPanel} from './juegos/juegos.js'
 
 const tabs = document.querySelectorAll('.tab')
 const panels = document.querySelectorAll('.panel')
@@ -128,7 +129,7 @@ hoyPanel.addEventListener('keydown', (e) => {
 const panelMap = {
   inicio: new URL('./panels/inicio.html', import.meta.url).href,
   hoy: new URL('./panels/hoy.html', import.meta.url).href,
-  juegos: new URL('./panels/juegos.html', import.meta.url).href,
+  juegos: new URL('./juegos/juegos.html', import.meta.url).href,
   foro: new URL('./panels/foro.html', import.meta.url).href,
   funding: new URL('./panels/funding.html', import.meta.url).href,
   archivo: new URL('./panels/archivo.html', import.meta.url).href,
@@ -144,15 +145,10 @@ function loadPanel(name) {
       panel.innerHTML = html
       panel.dataset.loaded = 'true'
 
-      panel.insertAdjacentHTML(
-        "afterbegin",
-        "<p style='color:white'>JUEGOS CARGADOS</p>"
-      )
-
       initSubtabs(panel)
 
       if (name === 'juegos') {
-        initWordle(panel)
+        initJuegosPanel(panel)
       }
 
       if (name === 'hoy' || name === 'archivo') {
@@ -166,17 +162,6 @@ function loadPanel(name) {
       }
     })
 }
-
-      if (name === 'hoy' || name === 'archivo') {
-        renderNoticiasIntoPanel(panel, name).catch((err) => {
-          console.warn('Error cargando noticias:', err)
-        })
-      }
-
-      if (name === 'inicio') {
-        runInicioEnter(panel)
-      }
-    
 
 /* =====================================================
   CARGA INICIAL
@@ -212,6 +197,55 @@ const CATEGORY_LABELS = {
   deportes: 'Deportes',
   espectaculos: 'Espectáculos',
   felices: 'Noticias Felices',
+}
+
+/** Día editorial para “Lo de hoy” vs archivo (solo fecha, sin librerías extra). */
+const NOTICIAS_TZ =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_NOTICIAS_TZ) || 'America/Mexico_City'
+
+function calendarDayKey(isoLike, timeZone) {
+  if (!isoLike) return ''
+  const raw = String(isoLike).trim()
+  /* Fecha tipo Sanity `date` (solo día): no pasar por UTC midnight. */
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw
+  const d = new Date(raw)
+  if (Number.isNaN(d.getTime())) return ''
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(d)
+}
+
+function todayCalendarKey(timeZone) {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date())
+}
+
+/**
+ * Lo de hoy: solo noticias cuya fecha de publicación es “hoy” en NOTICIAS_TZ.
+ * Archivo: días anteriores (y las sin fecha). Fechas futuras no se muestran hasta su día.
+ */
+function filterPostsByNewsDay(posts, panelName) {
+  if (panelName !== 'hoy' && panelName !== 'archivo') return posts
+
+  const today = todayCalendarKey(NOTICIAS_TZ)
+
+  if (panelName === 'hoy') {
+    return posts.filter((p) => calendarDayKey(p.date, NOTICIAS_TZ) === today)
+  }
+
+  return posts.filter((p) => {
+    const key = calendarDayKey(p.date, NOTICIAS_TZ)
+    if (!key) return true
+    if (key > today) return false
+    return key < today
+  })
 }
 
 function formatDate(isoLike) {
@@ -307,7 +341,8 @@ function groupByCategory(posts) {
 }
 
 async function renderNoticiasIntoPanel(panelEl, panelName) {
-  const posts = await loadNoticias()
+  const allPosts = await loadNoticias()
+  const posts = filterPostsByNewsDay(allPosts, panelName)
   const grouped = groupByCategory(posts)
 
   for (const [category, list] of Object.entries(grouped)) {
@@ -318,39 +353,14 @@ async function renderNoticiasIntoPanel(panelEl, panelName) {
     const slice = list.slice(0, max)
 
     if (!slice.length) {
-      grid.innerHTML = `<p class="news-empty">Aún no hay noticias en esta categoría.</p>`
+      const emptyMsg =
+        panelName === 'hoy'
+          ? 'No hay noticias de hoy en esta categoría.'
+          : 'Aún no hay noticias en esta categoría.'
+      grid.innerHTML = `<p class="news-empty">${emptyMsg}</p>`
       continue
     }
 
     grid.innerHTML = slice.map(buildNewsCardHtml).join('\n')
   }
 }
-
-function initWordle(panel) {
-  const menuEl = panel.querySelector('#games-menu')
-  const gameEl = panel.querySelector('#wordle-screen')
-
-  const btnWordle = panel.querySelector('#btn-wordle')
-  const btnBack   = panel.querySelector('#wordle-back')
-
-  if (!menuEl || !gameEl || !btnWordle) return
-
-  const showMenu = () => {
-    menuEl.classList.remove('wordle-hidden')
-    gameEl.classList.add('wordle-hidden')
-  }
-
-  const showGame = () => {
-    menuEl.classList.add('wordle-hidden')
-    gameEl.classList.remove('wordle-hidden')
-  }
-
-  // estado inicial
-  showMenu()
-
-  btnWordle.addEventListener('click', showGame)
-  btnBack?.addEventListener('click', showMenu)
-
-  console.log('INIT WORDLE')
-}
-

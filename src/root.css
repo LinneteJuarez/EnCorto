@@ -1,0 +1,67 @@
+/* =============================================================================
+   En Corto — tokens en :root (documento base + paleta de pestañas / secciones)
+   Cargar antes que styles.css y demás hojas que usen var(--…)
+   ============================================================================= */
+
+:root {
+  /* ── Paleta por sección (pestaña y panel comparten tono) ── */
+  --color-inicio: #ffd700;
+  --color-hoy: #8073c7;
+  --color-juegos: #00e5e5;
+  --color-foro: #ff6c54;
+  --color-funding: #ff00a8;
+  --color-archivo: #80de73;
+
+  /* Acentos reutilizados en UI (coinciden con secciones / Wordle) */
+  --color-accent-gold: #ffd700;
+  --color-accent-magenta: #ff00a8;
+  --color-accent-cyan: #00e5e5;
+
+  /* Neutros documento */
+  --color-surface: #ffffff;
+  --color-ink: #000000;
+  --color-ink-soft: #333333;
+  --color-muted-line: rgba(0, 0, 0, 0.35);
+  --color-surface-soft: #e8e8e8;
+  --color-elevated-dark: #0a0a0a;
+  --color-elevated-mid: #444444;
+  --color-tag-win: #c49e00;
+
+  /* Superficies interactivas (subpestañas “Lo de hoy” / “Archivo”) */
+  --color-subtab-face: var(--color-funding);
+  --color-subtab-shadow: #ff00aa5d;
+  --color-subtab-hover-surface: #ffe9e9;
+
+  --overlay-juegos: rgba(0, 229, 229, 0.6);
+
+  /* Tipografía base */
+  --font-sans: HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Bordes y contorno general */
+  --border-width: 2px;
+  --border-width-thick: 5px;
+  --color-border: var(--color-ink);
+  --border-default: var(--border-width) solid var(--color-border);
+  --border-width-modal: 3px;
+  --radius-tab-tl: 16px;
+  --radius-tab-tr: 6px;
+
+  /* Espaciado habitual */
+  --space-panel: 40px;
+  --header-min-height: 64px;
+  --logo-img-height: 40px;
+
+  /* Apilamiento (header sobre paneles) */
+  --z-header: 20;
+  --z-main: 10;
+  --z-tab-active-notch: 20;
+}
+
+html {
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+body {
+  font-family: var(--font-sans);
+}
