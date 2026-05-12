@@ -1,6 +1,90 @@
-        <div class="games-grid">
-      <div class="game-card">Juego 1</div>
-      <div class="game-card">Juego 2</div>
-      <div class="game-card">Juego 3</div>
+<section class="panel-inner">
+
+  <!-- ── MENÚ DE JUEGOS ── -->
+  <div id="games-menu">
+    <div class="games-grid">
+
+      <!-- JUEGO 1: Wordle -->
+      <div class="game-card" id="btn-wordle">
+        <div class="gc-top">
+          <div class="gc-letters">
+            <span class="gl gl-hit">P</span>
+            <span class="gl gl-mis">A</span>
+            <span class="gl gl-hit">L</span>
+            <span class="gl gl-near">A</span>
+            <span class="gl gl-hit">S</span>
+          </div>
+        </div>
+
+        <div class="gc-info">
+          <p class="gc-num">01</p>
+          <h3 class="gc-name">La Palabra</h3>
+          <p class="gc-desc">
+            Adivina la palabra del día en 6 intentos. Al resolverla, descubre su definición.
+          </p>
+          <button class="gc-play">Jugar →</button>
+        </div>
+      </div>
+
+      <!-- JUEGO 2 -->
+      <div class="game-card game-card--soon">
+        <div class="gc-top gc-top--soon">
+          <span class="gc-soon-label">Próximamente</span>
+        </div>
+        <div class="gc-info">
+          <p class="gc-num">02</p>
+          <h3 class="gc-name">Juego 2</h3>
+          <p class="gc-desc">En construcción. Vuelve pronto.</p>
+        </div>
+      </div>
+
+      <!-- JUEGO 3 -->
+      <div class="game-card game-card--soon">
+        <div class="gc-top gc-top--soon">
+          <span class="gc-soon-label">Próximamente</span>
+        </div>
+        <div class="gc-info">
+          <p class="gc-num">03</p>
+          <h3 class="gc-name">Juego 3</h3>
+          <p class="gc-desc">En construcción. Vuelve pronto.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── WORDLE (JUEGO) ── -->
+  <div id="wordle-screen" class="wordle-hidden">
+
+    <div class="wordle-topbar">
+      <button class="w-btn-back" id="wordle-back">← Juegos</button>
+      <h2 class="wordle-topbar-title">La Palabra</h2>
+      <button class="w-btn-surrender" id="wordle-surrender">Rendirse</button>
     </div>
 
+    <div class="wordle-center">
+      <p class="wordle-day-label" id="wordle-day-label">Palabra del día</p>
+      <div class="wordle-board" id="wordle-board"></div>
+      <p class="wordle-msg" id="wordle-msg"></p>
+      <div class="wordle-keyboard" id="wordle-keyboard"></div>
+    </div>
+  </div>
+
+  <!-- ── WORDLE RESULTADO FINAL ── -->
+  <div id="wordle-end" class="wordle-hidden">
+    <div class="wordle-modal">
+      <p class="wm-tag" id="wm-tag"></p>
+      <h3 class="wm-word" id="wm-word"></h3>
+      <p class="wm-def" id="wm-def"></p>
+
+      <div class="wm-actions">
+        <button class="wm-btn wm-btn--sec" id="wm-back">← Juegos</button>
+        <button class="wm-btn wm-btn--pri" id="wm-share">
+          Compartir resultado
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</section>

@@ -951,3 +951,412 @@ nav {
   }
 }
 
+/* ── GRID DE JUEGOS ── */
+#panel-juegos {
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+ 
+#games-menu {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+ 
+.games-grid {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 960px;
+  align-items: stretch;
+}
+ 
+.game-card {
+  flex: 1;
+  background: white;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+ 
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 5px 5px 0 black;
+}
+ 
+.game-card--soon { cursor: default; opacity: 0.55; }
+.game-card--soon:hover { transform: none; box-shadow: none; }
+ 
+/* parte superior de la card */
+.gc-top {
+  background: #0A0A0A;
+  padding: 28px 24px 24px;
+  border-bottom: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+ 
+.gc-top--soon {
+  background: #E8E8E8;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.gc-soon-label {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.35);
+}
+ 
+/* mini tablero decorativo */
+.gc-letters {
+  display: flex;
+  gap: 6px;
+}
+ 
+.gl {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white;
+}
+ 
+.gl-hit  { background: #FFD700; color: black; border-color: #FFD700; }
+.gl-near { background: #FF00A8; border-color: #FF00A8; }
+.gl-mis  { background: #444;    border-color: #444; }
+ 
+/* info inferior */
+.gc-info {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+ 
+.gc-num {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(0,0,0,0.35);
+  margin: 0;
+}
+ 
+.gc-name {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+ 
+.gc-desc {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.55);
+  margin: 4px 0 0;
+  flex: 1;
+}
+ 
+.gc-play {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: 12px;
+  transition: background 0.15s;
+}
+ 
+.gc-play:hover { background: #FF00A8; }
+ 
+ 
+/* ══════════════════════════════════════════════
+   WORDLE SCREEN
+══════════════════════════════════════════════ */
+ 
+#wordle-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #00E5E5;
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+ 
+.wordle-hidden {
+  display: none;
+}
+ 
+/* barra superior */
+.wordle-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+  background: white;
+  border-bottom: 2px solid black;
+  flex-shrink: 0;
+}
+ 
+.wordle-topbar-title {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+ 
+.w-btn-back,
+.w-btn-surrender {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 2px solid black;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+ 
+.w-btn-back:hover     { background: black; color: white; }
+.w-btn-surrender:hover{ background: #FF00A8; border-color: #FF00A8; color: white; }
+ 
+/* área central */
+.wordle-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  overflow: hidden;
+}
+ 
+.wordle-day-label {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.45);
+  margin: 0;
+}
+ 
+/* tablero */
+.wordle-board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 6px;
+}
+ 
+.w-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+ 
+.w-cell {
+  width: 52px;
+  height: 52px;
+  border: 2px solid black;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  text-transform: uppercase;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.1s ease;
+}
+ 
+.w-cell.filled  { border-color: black; transform: scale(1.06); }
+.w-cell.correct { background: #FFD700; border-color: #FFD700; color: black; }
+.w-cell.present { background: #FF00A8; border-color: #FF00A8; color: white; }
+.w-cell.absent  { background: #0A0A0A; border-color: #0A0A0A; color: white; }
+ 
+/* mensaje */
+.wordle-msg {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: black;
+  min-height: 18px;
+  margin: 0;
+  text-align: center;
+}
+ 
+/* teclado */
+.wordle-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+ 
+.wk-row {
+  display: flex;
+  gap: 5px;
+}
+ 
+.wk-key {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  min-width: 36px;
+  height: 44px;
+  padding: 0 6px;
+  background: white;
+  border: 2px solid black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.05em;
+}
+ 
+.wk-key--wide { min-width: 56px; font-size: 10px; letter-spacing: 0.08em; }
+.wk-key:active { transform: scale(0.94); }
+ 
+.wk-key.correct { background: #FFD700; border-color: #FFD700; color: black; }
+.wk-key.present { background: #FF00A8; border-color: #FF00A8; color: white; }
+.wk-key.absent  { background: #0A0A0A; border-color: #0A0A0A; color: white; }
+ 
+/* ── MODAL ── */
+.wordle-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 229, 229, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(2px);
+}
+ 
+.wordle-modal {
+  background: white;
+  border: 3px solid black;
+  padding: 36px 32px 28px;
+  max-width: 420px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.wm-tag {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin: 0;
+}
+ 
+.wm-tag--win  { color: #c49e00; }
+.wm-tag--lose { color: #FF00A8; }
+ 
+.wm-word {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+ 
+.wm-def {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(0,0,0,0.65);
+  margin: 4px 0 8px;
+}
+ 
+.wm-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+ 
+.wm-btn {
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 2px solid black;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+ 
+.wm-btn--sec { background: white; color: black; }
+.wm-btn--sec:hover { background: black; color: white; }
+.wm-btn--pri { background: black; color: white; flex: 1; }
+.wm-btn--pri:hover { background: #FF00A8; border-color: #FF00A8; }
+ 
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  #games-menu { padding: 20px 16px; }
+  .games-grid { flex-direction: column; gap: 16px; max-width: 100%; }
+  .gc-top     { min-height: 100px; }
+ 
+  .w-cell     { width: 42px; height: 42px; font-size: 18px; }
+  .wk-key     { min-width: 30px; height: 40px; font-size: 11px; }
+  .wk-key--wide { min-width: 46px; }
+}
+ 
+@media (max-height: 640px) {
+  .w-cell       { width: 40px; height: 40px; font-size: 16px; }
+  .wordle-center { gap: 8px; }
+}
+#wordle-end {
+  position: absolute;
+  inset: 0;
+  background: #00E5E5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

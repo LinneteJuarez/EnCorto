@@ -123,7 +123,7 @@ hoyPanel.addEventListener('keydown', (e) => {
 
 /* =====================================================
   CARGA DE PANELES (HTML externo)
-  ===================================================== */
+===================================================== */
 
 const panelMap = {
   inicio: new URL('./panels/inicio.html', import.meta.url).href,
@@ -144,19 +144,39 @@ function loadPanel(name) {
       panel.innerHTML = html
       panel.dataset.loaded = 'true'
 
-      // inicializar subtabs del panel recién cargado
+      panel.insertAdjacentHTML(
+        "afterbegin",
+        "<p style='color:white'>JUEGOS CARGADOS</p>"
+      )
+
       initSubtabs(panel)
+
+      if (name === 'juegos') {
+        initWordle(panel)
+      }
 
       if (name === 'hoy' || name === 'archivo') {
         renderNoticiasIntoPanel(panel, name).catch((err) => {
-          console.warn('[Sanity] No se pudieron cargar noticias:', err)
-          // Si aún no hay noticias/configuración, dejamos el contenido estático del panel.
+          console.warn('Error cargando noticias:', err)
         })
       }
 
-      if (name === 'inicio') runInicioEnter(panel)
+      if (name === 'inicio') {
+        runInicioEnter(panel)
+      }
     })
 }
+
+      if (name === 'hoy' || name === 'archivo') {
+        renderNoticiasIntoPanel(panel, name).catch((err) => {
+          console.warn('Error cargando noticias:', err)
+        })
+      }
+
+      if (name === 'inicio') {
+        runInicioEnter(panel)
+      }
+    
 
 /* =====================================================
   CARGA INICIAL
@@ -304,5 +324,33 @@ async function renderNoticiasIntoPanel(panelEl, panelName) {
 
     grid.innerHTML = slice.map(buildNewsCardHtml).join('\n')
   }
+}
+
+function initWordle(panel) {
+  const menuEl = panel.querySelector('#games-menu')
+  const gameEl = panel.querySelector('#wordle-screen')
+
+  const btnWordle = panel.querySelector('#btn-wordle')
+  const btnBack   = panel.querySelector('#wordle-back')
+
+  if (!menuEl || !gameEl || !btnWordle) return
+
+  const showMenu = () => {
+    menuEl.classList.remove('wordle-hidden')
+    gameEl.classList.add('wordle-hidden')
+  }
+
+  const showGame = () => {
+    menuEl.classList.add('wordle-hidden')
+    gameEl.classList.remove('wordle-hidden')
+  }
+
+  // estado inicial
+  showMenu()
+
+  btnWordle.addEventListener('click', showGame)
+  btnBack?.addEventListener('click', showMenu)
+
+  console.log('INIT WORDLE')
 }
 
