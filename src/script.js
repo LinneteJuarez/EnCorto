@@ -4,7 +4,6 @@
 
 import {createClient} from '@sanity/client'
 import {toHTML} from '@portabletext/to-html'
-import {initJuegosPanel} from './juegos/juegos.js'
 
 const tabs = document.querySelectorAll('.tab')
 const panels = document.querySelectorAll('.panel')
@@ -129,10 +128,19 @@ hoyPanel.addEventListener('keydown', (e) => {
 const panelMap = {
   inicio: new URL('./panels/inicio.html', import.meta.url).href,
   hoy: new URL('./panels/hoy.html', import.meta.url).href,
-  juegos: new URL('./juegos/juegos.html', import.meta.url).href,
+  juegos: new URL('./panels/juegos.html', import.meta.url).href,
   foro: new URL('./panels/foro.html', import.meta.url).href,
   funding: new URL('./panels/funding.html', import.meta.url).href,
   archivo: new URL('./panels/archivo.html', import.meta.url).href,
+}
+
+/** Mini-app React (juegosEC): en dev suele ir en otro puerto; en build se copia a dist/juegos-ec */
+function initJuegosEcIframe(panel) {
+  const frame = panel.querySelector('iframe.juegos-ec-frame')
+  if (!frame || frame.dataset.srcSet === 'true') return
+  const devUrl = import.meta.env?.VITE_JUEGOS_EC_DEV_URL || 'http://localhost:5174/'
+  frame.src = import.meta.env?.DEV ? devUrl : './juegos-ec/index.html'
+  frame.dataset.srcSet = 'true'
 }
 
 function loadPanel(name) {
@@ -148,7 +156,7 @@ function loadPanel(name) {
       initSubtabs(panel)
 
       if (name === 'juegos') {
-        initJuegosPanel(panel)
+        initJuegosEcIframe(panel)
       }
 
       if (name === 'hoy' || name === 'archivo') {

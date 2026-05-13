@@ -5,7 +5,9 @@
   "main": "script.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "dev:juegos": "npm run dev --prefix juegosEC",
+    "dev:all": "concurrently -n encorto,juegosEC -c cyan,magenta \"vite\" \"npm run dev --prefix juegosEC\"",
+    "build": "vite build && npm run build --prefix juegosEC && node scripts/copy-juegos-ec.mjs",
     "serve": "live-server",
     "migrate:noticias": "node scripts/migrate-md-to-sanity.cjs"
   },
@@ -24,12 +26,26 @@
   "dependencies": {
     "@portabletext/to-html": "^5.0.2",
     "@sanity/client": "^7.22.0",
+    "@supabase/supabase-js": "^2.105.4",
+    "an-array-of-spanish-words": "^2.0.0",
+    "canvas-confetti": "^1.9.4",
+    "dayjs": "^1.11.20",
     "dotenv": "^17.2.2",
+    "express": "^5.2.1",
+    "framer-motion": "^12.38.0",
     "gray-matter": "^4.0.3",
+    "konva": "^10.3.0",
     "marked": "^18.0.3",
-    "vite": "^8.0.10"
+    "react-confetti": "^6.4.0",
+    "react-hot-toast": "^2.6.0",
+    "react-konva": "^19.2.4",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "vite": "^8.0.10",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "live-server": "^1.2.2"
   }
 }

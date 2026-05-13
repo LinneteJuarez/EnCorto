@@ -1,22 +1,66 @@
-/* Pestaña y fondo del panel Juegos */
-.tab[data-tab="juegos"] {
+.ec-juegos {
+  min-height: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
   background: var(--color-juegos);
+  color: var(--color-ink);
 }
 
-#panel-juegos {
-  background: var(--color-juegos);
-  overflow: hidden;
-  padding: 0;
-  position: relative;
+.ec-juegos * {
+  box-sizing: border-box;
 }
 
+.ec-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 48px;
+  background: var(--color-surface);
+  border-bottom: var(--border-default);
+  flex-shrink: 0;
+}
+
+.ec-topbar h1 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ec-btn {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: none;
+  border: var(--border-default);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ec-btn:hover {
+  background: var(--color-ink);
+  color: var(--color-surface);
+}
+
+.ec-btn--accent:hover {
+  background: var(--color-accent-magenta);
+  border-color: var(--color-accent-magenta);
+  color: var(--color-surface);
+}
+
+/* —— Menú —— */
 #games-menu {
   width: 100%;
-  height: 100%;
+  min-height: calc(100vh - 48px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 28px 20px 36px;
 }
 
 .games-grid {
@@ -35,7 +79,10 @@
   flex-direction: column;
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
-  font-family: var(--font-sans);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  appearance: none;
 }
 
 .game-card:hover {
@@ -43,54 +90,26 @@
   box-shadow: 5px 5px 0 var(--color-ink);
 }
 
-.game-card--soon {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.game-card--soon:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-/* parte superior de la card */
 .gc-top {
   background: var(--color-elevated-dark);
-  padding: 28px 24px 24px;
+  padding: 24px 20px 20px;
   border-bottom: var(--border-default);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 140px;
+  min-height: 120px;
 }
 
-.gc-top--soon {
-  background: var(--color-surface-soft);
-  align-items: center;
-  justify-content: center;
-}
-
-.gc-soon-label {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.35);
-}
-
-/* mini tablero decorativo */
 .gc-letters {
   display: flex;
   gap: 6px;
 }
 
 .gl {
-  font-family: var(--font-sans);
   font-weight: 900;
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,9 +133,8 @@
   border-color: var(--color-elevated-mid);
 }
 
-/* info inferior */
 .gc-info {
-  padding: 20px 24px 24px;
+  padding: 18px 20px 22px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -124,7 +142,6 @@
 }
 
 .gc-num {
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.2em;
@@ -133,16 +150,14 @@
 }
 
 .gc-name {
-  font-family: var(--font-sans);
   font-weight: 900;
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: -0.04em;
   text-transform: uppercase;
   margin: 0;
 }
 
 .gc-desc {
-  font-family: var(--font-sans);
   font-weight: 300;
   font-size: 12px;
   line-height: 1.6;
@@ -152,7 +167,6 @@
 }
 
 .gc-play {
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -163,7 +177,7 @@
   padding: 10px 16px;
   cursor: pointer;
   align-self: flex-start;
-  margin-top: 12px;
+  margin-top: 10px;
   transition: background 0.15s;
 }
 
@@ -171,92 +185,25 @@
   background: var(--color-accent-magenta);
 }
 
-/* ══════════════════════════════════════════════
-   WORDLE SCREEN
-══════════════════════════════════════════════ */
-
-#wordle-screen {
-  position: absolute;
-  inset: 0;
+/* —— Wordle —— */
+.wordle-screen {
   display: flex;
   flex-direction: column;
-  background: var(--color-juegos);
-  font-family: var(--font-sans);
+  min-height: calc(100vh - 48px);
 }
 
-.wordle-hidden {
-  display: none;
-}
-
-/*
-  Los selectores #wordle-screen y #wordle-end fijan display:flex.
-  Eso ganaba a .wordle-hidden (solo clase), así que la pantalla final
-  quedaba visible encima del menú. Forzar oculto cuando lleva la clase.
-*/
-#wordle-screen.wordle-hidden,
-#wordle-end.wordle-hidden {
-  display: none !important;
-}
-
-/* barra superior */
-.wordle-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  height: 52px;
-  background: var(--color-surface);
-  border-bottom: var(--border-default);
-  flex-shrink: 0;
-}
-
-.wordle-topbar-title {
-  font-family: var(--font-sans);
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.w-btn-back,
-.w-btn-surrender {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: none;
-  border: var(--border-default);
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-}
-
-.w-btn-back:hover {
-  background: var(--color-ink);
-  color: var(--color-surface);
-}
-
-.w-btn-surrender:hover {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
-  color: var(--color-surface);
-}
-
-/* área central */
 .wordle-center {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 16px 24px 20px;
-  overflow: hidden;
+  gap: 10px;
+  padding: 12px 16px 20px;
+  overflow: auto;
 }
 
 .wordle-day-label {
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.22em;
@@ -265,7 +212,6 @@
   margin: 0;
 }
 
-/* tablero */
 .wordle-board {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
@@ -286,7 +232,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-sans);
   font-weight: 900;
   font-size: 22px;
   text-transform: uppercase;
@@ -296,7 +241,7 @@
 
 .w-cell.filled {
   border-color: var(--color-ink);
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .w-cell.correct {
@@ -317,38 +262,55 @@
   color: var(--color-surface);
 }
 
-/* mensaje */
+.w-row--shake .w-cell {
+  animation: w-shake 0.45s ease;
+}
+
+@keyframes w-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
 .wordle-msg {
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-ink);
   min-height: 18px;
   margin: 0;
   text-align: center;
 }
 
-/* teclado */
 .wordle-keyboard {
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: center;
+  padding-bottom: 8px;
 }
 
 .wk-row {
   display: flex;
   gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .wk-key {
-  font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  min-width: 36px;
+  min-width: 32px;
   height: 44px;
   padding: 0 6px;
   background: var(--color-surface);
@@ -358,13 +320,12 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
-  letter-spacing: 0.05em;
 }
 
 .wk-key--wide {
-  min-width: 56px;
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  min-width: 52px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
 }
 
 .wk-key:active {
@@ -389,31 +350,31 @@
   color: var(--color-surface);
 }
 
-/* ── MODAL ── */
-.wordle-modal-overlay {
-  position: absolute;
+/* —— Modal final Wordle —— */
+.wordle-end {
+  position: fixed;
   inset: 0;
   background: var(--overlay-juegos);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: 100;
+  padding: 16px;
   backdrop-filter: blur(2px);
 }
 
 .wordle-modal {
   background: var(--color-surface);
   border: var(--border-width-modal) solid var(--color-border);
-  padding: 36px 32px 28px;
+  padding: 28px 24px 22px;
   max-width: 420px;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .wm-tag {
-  font-family: var(--font-sans);
   font-weight: 900;
   font-size: 10px;
   letter-spacing: 0.25em;
@@ -430,17 +391,14 @@
 }
 
 .wm-word {
-  font-family: var(--font-sans);
   font-weight: 900;
-  font-size: 36px;
+  font-size: 32px;
   letter-spacing: -0.04em;
   text-transform: uppercase;
   margin: 0;
-  line-height: 1;
 }
 
 .wm-def {
-  font-family: var(--font-sans);
   font-weight: 300;
   font-size: 14px;
   line-height: 1.65;
@@ -452,16 +410,16 @@
   display: flex;
   gap: 10px;
   margin-top: 4px;
+  flex-wrap: wrap;
 }
 
 .wm-btn {
-  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   border: var(--border-default);
-  padding: 10px 18px;
+  padding: 10px 16px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
@@ -480,6 +438,7 @@
   background: var(--color-ink);
   color: var(--color-surface);
   flex: 1;
+  min-width: 140px;
 }
 
 .wm-btn--pri:hover {
@@ -487,36 +446,124 @@
   border-color: var(--color-accent-magenta);
 }
 
-#wordle-end {
-  position: absolute;
-  inset: 0;
-  background: var(--color-juegos);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
+/* —— Adivinanzas —— */
+.riddles-wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 20px 32px;
+  text-align: left;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  #games-menu {
-    padding: 20px 16px;
-  }
+.riddles-q {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 16px;
+}
 
+.riddles-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.r-opt {
+  text-align: left;
+  padding: 12px 14px;
+  border: var(--border-default);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.r-opt:hover:not(:disabled) {
+  background: var(--color-surface-soft);
+}
+
+.r-opt:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.r-opt--ok {
+  border-color: #2e7d32;
+  background: rgba(46, 125, 50, 0.12);
+}
+
+.r-opt--bad {
+  border-color: var(--color-accent-magenta);
+  background: rgba(255, 0, 136, 0.08);
+}
+
+.r-foot {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.r-progress {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* —— Paint —— */
+.paint-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 12px 16px 24px;
+  gap: 10px;
+}
+
+.paint-tema {
+  background: var(--color-surface);
+  border: var(--border-default);
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.paint-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.paint-toolbar input[type='color'] {
+  width: 44px;
+  height: 36px;
+  border: var(--border-default);
+  padding: 2px;
+  cursor: pointer;
+  background: var(--color-surface);
+}
+
+.paint-canvas {
+  touch-action: none;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  height: min(52vh, 420px);
+  border: var(--border-default);
+  background: var(--color-surface);
+  cursor: crosshair;
+}
+
+@media (max-width: 768px) {
   .games-grid {
     flex-direction: column;
     gap: 16px;
-    max-width: 100%;
-  }
-
-  #panel-juegos .game-card {
-    flex: none;
-    min-height: 200px;
-    height: auto;
-  }
-
-  .gc-top {
-    min-height: 100px;
   }
 
   .w-cell {
@@ -526,24 +573,12 @@
   }
 
   .wk-key {
-    min-width: 30px;
+    min-width: 28px;
     height: 40px;
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .wk-key--wide {
-    min-width: 46px;
-  }
-}
-
-@media (max-height: 640px) {
-  .w-cell {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .wordle-center {
-    gap: 8px;
+    min-width: 44px;
   }
 }
