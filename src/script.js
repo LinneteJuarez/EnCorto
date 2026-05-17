@@ -135,6 +135,107 @@ const panelMap = {
 }
 
 /** Mini-app React (juegosEC): en dev suele ir en otro puerto; en build se copia a dist/juegos-ec */
+function initPinCarousel(carousel) {
+  if (!carousel || carousel.dataset.pinCarouselInit === 'true') return
+
+  const viewport = carousel.querySelector('.pin-carousel__viewport')
+  const track = viewport?.querySelector('.pin-carousel__track')
+  const slides = [...carousel.querySelectorAll('.pin-slide')]
+  const prevBtn = carousel.querySelector('.pin-carousel__btn--prev')
+  const nextBtn = carousel.querySelector('.pin-carousel__btn--next')
+  const dotsHost = carousel.querySelector('.pin-carousel__dots')
+
+  if (!track || !viewport || !dotsHost || slides.length === 0) return
+
+  carousel.dataset.pinCarouselInit = 'true'
+
+  let index = 0
+  let dragStartX = 0
+  let dragDelta = 0
+  let isDragging = false
+
+  const dots = slides.map((_, i) => {
+    const dot = document.createElement('button')
+    dot.type = 'button'
+    dot.className = 'pin-carousel__dot'
+    dot.setAttribute('role', 'tab')
+    dot.setAttribute('aria-label', `Pin ${i + 1}`)
+    dot.addEventListener('click', () => goTo(i))
+    dotsHost.appendChild(dot)
+    return dot
+  })
+
+  function goTo(nextIndex) {
+    index = (nextIndex + slides.length) % slides.length
+    track.style.transform = `translate3d(-${index * 100}%, 0, 0)`
+    dots.forEach((dot, i) => {
+      const active = i === index
+      dot.classList.toggle('is-active', active)
+      dot.setAttribute('aria-selected', active ? 'true' : 'false')
+    })
+    carousel.setAttribute('aria-label', `Pines disponibles, ${index + 1} de ${slides.length}`)
+  }
+
+  function step(delta) {
+    goTo(index + delta)
+  }
+
+  prevBtn?.addEventListener('click', () => step(-1))
+  nextBtn?.addEventListener('click', () => step(1))
+
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      step(-1)
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      step(1)
+    }
+  })
+
+  const onPointerDown = (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    isDragging = true
+    dragStartX = e.clientX
+    dragDelta = 0
+    carousel.classList.add('is-dragging')
+    viewport.setPointerCapture(e.pointerId)
+  }
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return
+    dragDelta = e.clientX - dragStartX
+    const offset = (-index * 100) + (dragDelta / viewport.offsetWidth) * 100
+    track.style.transform = `translate3d(${offset}%, 0, 0)`
+  }
+
+  const onPointerUp = (e) => {
+    if (!isDragging) return
+    isDragging = false
+    carousel.classList.remove('is-dragging')
+    viewport.releasePointerCapture(e.pointerId)
+    const threshold = viewport.offsetWidth * 0.18
+    if (dragDelta < -threshold) step(1)
+    else if (dragDelta > threshold) step(-1)
+    else goTo(index)
+    dragDelta = 0
+  }
+
+  carousel.querySelectorAll('.pin-product').forEach((btn) => {
+    btn.addEventListener('pointerdown', (e) => e.stopPropagation())
+  })
+
+  viewport.addEventListener('pointerdown', onPointerDown)
+  viewport.addEventListener('pointermove', onPointerMove)
+  viewport.addEventListener('pointerup', onPointerUp)
+  viewport.addEventListener('pointercancel', onPointerUp)
+
+  carousel.setAttribute('tabindex', '0')
+  carousel.setAttribute('role', 'region')
+  carousel.setAttribute('aria-roledescription', 'carrusel')
+  goTo(0)
+}
+
 function initJuegosEcIframe(panel) {
   const frame = panel.querySelector('iframe.juegos-ec-frame')
   if (!frame || frame.dataset.srcSet === 'true') return
@@ -167,6 +268,10 @@ function loadPanel(name) {
 
       if (name === 'inicio') {
         runInicioEnter(panel)
+      }
+
+      if (name === 'funding') {
+        panel.querySelectorAll('[data-pin-carousel]').forEach(initPinCarousel)
       }
     })
 }

@@ -1,18 +1,14 @@
 /* Alineado con src/root.css del sitio En Corto */
 :root {
-  --color-juegos: #00e5e5;
-  --color-accent-gold: #ffd700;
-  --color-accent-magenta: #ff00a8;
-  --color-surface: #ffffff;
-  --color-ink: #000000;
-  --color-surface-soft: #e8e8e8;
-  --color-elevated-dark: #0a0a0a;
-  --color-elevated-mid: #444444;
-  --color-tag-win: #c49e00;
-  --overlay-juegos: rgba(0, 229, 229, 0.6);
+  --color-amarillo: #ffd700;
+  --color-azul: #00e5e5;
+  --color-rosa: #ff00a8;
+  --color-juegos: var(--color-azul);
+  --color-blanco: #ffffff;
+  --color-negro: #000000;
   --font-sans: HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --border-width: 2px;
-  --color-border: var(--color-ink);
+  --color-border: var(--color-negro);
   --border-default: var(--border-width) solid var(--color-border);
   --border-width-modal: 3px;
 }

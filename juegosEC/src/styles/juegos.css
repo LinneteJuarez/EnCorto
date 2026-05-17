@@ -3,7 +3,7 @@
   box-sizing: border-box;
   font-family: var(--font-sans);
   background: var(--color-juegos);
-  color: var(--color-ink);
+  color: var(--color-negro);
 }
 
 .ec-juegos * {
@@ -16,7 +16,7 @@
   justify-content: space-between;
   padding: 0 16px;
   height: 48px;
-  background: var(--color-surface);
+  background: var(--color-blanco);
   border-bottom: var(--border-default);
   flex-shrink: 0;
 }
@@ -43,14 +43,14 @@
 }
 
 .ec-btn:hover {
-  background: var(--color-ink);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  color: var(--color-blanco);
 }
 
 .ec-btn--accent:hover {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
-  color: var(--color-surface);
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
+  color: var(--color-blanco);
 }
 
 /* —— Menú —— */
@@ -73,7 +73,7 @@
 
 .game-card {
   flex: 1;
-  background: var(--color-surface);
+  background: var(--color-blanco);
   border: var(--border-default);
   display: flex;
   flex-direction: column;
@@ -87,11 +87,11 @@
 
 .game-card:hover {
   transform: translateY(-4px);
-  box-shadow: 5px 5px 0 var(--color-ink);
+  box-shadow: 5px 5px 0 var(--color-negro);
 }
 
 .gc-top {
-  background: var(--color-elevated-dark);
+  background: var(--color-negro);
   padding: 24px 20px 20px;
   border-bottom: var(--border-default);
   display: flex;
@@ -114,23 +114,23 @@
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-surface);
+  color: var(--color-blanco);
 }
 
 .gl-hit {
-  background: var(--color-accent-gold);
-  color: var(--color-ink);
-  border-color: var(--color-accent-gold);
+  background: var(--color-amarillo);
+  color: var(--color-negro);
+  border-color: var(--color-amarillo);
 }
 
 .gl-near {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
 }
 
 .gl-mis {
-  background: var(--color-elevated-mid);
-  border-color: var(--color-elevated-mid);
+  background: color-mix(in srgb, var(--color-negro) 27%, var(--color-blanco));
+  border-color: color-mix(in srgb, var(--color-negro) 27%, var(--color-blanco));
 }
 
 .gc-info {
@@ -171,8 +171,8 @@
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: var(--color-ink);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  color: var(--color-blanco);
   border: none;
   padding: 10px 16px;
   cursor: pointer;
@@ -182,7 +182,7 @@
 }
 
 .gc-play:hover {
-  background: var(--color-accent-magenta);
+  background: var(--color-rosa);
 }
 
 /* —— Wordle —— */
@@ -228,7 +228,7 @@
   width: 52px;
   height: 52px;
   border: var(--border-default);
-  background: var(--color-surface);
+  background: var(--color-blanco);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,26 +240,26 @@
 }
 
 .w-cell.filled {
-  border-color: var(--color-ink);
+  border-color: var(--color-negro);
   transform: scale(1.04);
 }
 
 .w-cell.correct {
-  background: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
-  color: var(--color-ink);
+  background: var(--color-amarillo);
+  border-color: var(--color-amarillo);
+  color: var(--color-negro);
 }
 
 .w-cell.present {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
-  color: var(--color-surface);
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
+  color: var(--color-blanco);
 }
 
 .w-cell.absent {
-  background: var(--color-elevated-dark);
-  border-color: var(--color-elevated-dark);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  border-color: var(--color-negro);
+  color: var(--color-blanco);
 }
 
 .w-row--shake .w-cell {
@@ -313,7 +313,7 @@
   min-width: 32px;
   height: 44px;
   padding: 0 6px;
-  background: var(--color-surface);
+  background: var(--color-blanco);
   border: var(--border-default);
   cursor: pointer;
   display: flex;
@@ -333,28 +333,28 @@
 }
 
 .wk-key.correct {
-  background: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
-  color: var(--color-ink);
+  background: var(--color-amarillo);
+  border-color: var(--color-amarillo);
+  color: var(--color-negro);
 }
 
 .wk-key.present {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
-  color: var(--color-surface);
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
+  color: var(--color-blanco);
 }
 
 .wk-key.absent {
-  background: var(--color-elevated-dark);
-  border-color: var(--color-elevated-dark);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  border-color: var(--color-negro);
+  color: var(--color-blanco);
 }
 
 /* —— Modal final Wordle —— */
 .wordle-end {
   position: fixed;
   inset: 0;
-  background: var(--overlay-juegos);
+  background: color-mix(in srgb, var(--color-azul) 60%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -364,7 +364,7 @@
 }
 
 .wordle-modal {
-  background: var(--color-surface);
+  background: var(--color-blanco);
   border: var(--border-width-modal) solid var(--color-border);
   padding: 28px 24px 22px;
   max-width: 420px;
@@ -383,11 +383,11 @@
 }
 
 .wm-tag--win {
-  color: var(--color-tag-win);
+  color: var(--color-amarillo);
 }
 
 .wm-tag--lose {
-  color: var(--color-accent-magenta);
+  color: var(--color-rosa);
 }
 
 .wm-word {
@@ -425,25 +425,25 @@
 }
 
 .wm-btn--sec {
-  background: var(--color-surface);
-  color: var(--color-ink);
+  background: var(--color-blanco);
+  color: var(--color-negro);
 }
 
 .wm-btn--sec:hover {
-  background: var(--color-ink);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  color: var(--color-blanco);
 }
 
 .wm-btn--pri {
-  background: var(--color-ink);
-  color: var(--color-surface);
+  background: var(--color-negro);
+  color: var(--color-blanco);
   flex: 1;
   min-width: 140px;
 }
 
 .wm-btn--pri:hover {
-  background: var(--color-accent-magenta);
-  border-color: var(--color-accent-magenta);
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
 }
 
 /* —— Adivinanzas —— */
@@ -471,7 +471,7 @@
   text-align: left;
   padding: 12px 14px;
   border: var(--border-default);
-  background: var(--color-surface);
+  background: var(--color-blanco);
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -479,7 +479,7 @@
 }
 
 .r-opt:hover:not(:disabled) {
-  background: var(--color-surface-soft);
+  background: color-mix(in srgb, var(--color-blanco) 92%, var(--color-negro));
 }
 
 .r-opt:disabled {
@@ -493,7 +493,7 @@
 }
 
 .r-opt--bad {
-  border-color: var(--color-accent-magenta);
+  border-color: var(--color-rosa);
   background: rgba(255, 0, 136, 0.08);
 }
 
@@ -524,7 +524,7 @@
 }
 
 .paint-tema {
-  background: var(--color-surface);
+  background: var(--color-blanco);
   border: var(--border-default);
   padding: 12px 14px;
   font-size: 15px;
@@ -546,7 +546,7 @@
   border: var(--border-default);
   padding: 2px;
   cursor: pointer;
-  background: var(--color-surface);
+  background: var(--color-blanco);
 }
 
 .paint-canvas {
@@ -556,7 +556,7 @@
   margin: 0 auto;
   height: min(52vh, 420px);
   border: var(--border-default);
-  background: var(--color-surface);
+  background: var(--color-blanco);
   cursor: crosshair;
 }
 

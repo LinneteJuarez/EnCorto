@@ -1,12 +1,145 @@
-<div class="funding-layout">
-      <div class="shop">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-      </div>
-      <div class="donation">
-        <textarea placeholder="Mensaje"></textarea>
-        <button>Donar</button>
+﻿<div class="funding-layout">
+  <section class="shop-section">
+    <div class="carousel-section">
+      <h2 class="carousel-section__title">Colección base</h2>
+      <div class="pin-carousel" data-pin-carousel>
+        <button type="button" class="pin-carousel__btn pin-carousel__btn--prev" aria-label="Pin anterior">
+          <span aria-hidden="true">&#8249;</span>
+        </button>
+        <div class="pin-carousel__viewport">
+          <div class="pin-carousel__track">
+            <div class="pin-slide">
+              <button type="button" class="pin-product">
+                <span class="pin-product__back" aria-hidden="true">
+                  <img src="./data/pin_back.png" alt="" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-product__front">
+                  <img src="./data/pin01.png" alt="Pin En corto" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info">
+                  <span class="pin-info__name">En corto.</span>
+                  <span class="pin-info__price">$25 mxn</span>
+                </span>
+              </button>
+            </div>
+            <div class="pin-slide">
+              <button type="button" class="pin-product">
+                <span class="pin-product__back" aria-hidden="true">
+                  <img src="./data/pin_back.png" alt="" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-product__front">
+                  <img src="./data/pin02.png" alt="Pin 2" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info">
+                  <span class="pin-info__name">Pin 2</span>
+                  <span class="pin-info__price">$25 mxn</span>
+                </span>
+              </button>
+            </div>
+            <div class="pin-slide">
+              <button type="button" class="pin-product">
+                <span class="pin-product__back" aria-hidden="true">
+                  <img src="./data/pin_back.png" alt="" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-product__front">
+                  <img src="./data/pin03.png" alt="Pin 3" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info">
+                  <span class="pin-info__name">Pin 3</span>
+                  <span class="pin-info__price">$25 mxn</span>
+                </span>
+              </button>
+            </div>
+            <div class="pin-slide">
+              <button type="button" class="pin-product">
+                <span class="pin-product__back" aria-hidden="true">
+                  <img src="./data/pin_back.png" alt="" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-product__front">
+                  <img src="./data/pin04.png" alt="Pin 4" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info">
+                  <span class="pin-info__name">Pin 4</span>
+                  <span class="pin-info__price">$25 mxn</span>
+                </span>
+              </button>
+            </div>
+            <div class="pin-slide">
+              <button type="button" class="pin-product">
+                <span class="pin-product__back" aria-hidden="true">
+                  <img src="./data/pin_back.png" alt="" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-product__front">
+                  <img src="./data/pin05.png" alt="Pin 5" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info">
+                  <span class="pin-info__name">Pin 5</span>
+                  <span class="pin-info__price">$25 mxn</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="pin-carousel__btn pin-carousel__btn--next" aria-label="Pin siguiente">
+          <span aria-hidden="true">&#8250;</span>
+        </button>
+        <div class="pin-carousel__dots" role="tablist" aria-label="Elegir pin"></div>
       </div>
     </div>
+    <div class="carousel-section carousel-section--limited">
+      <h2 class="carousel-section__title">Edición limitada</h2>
+      <div class="pin-carousel pin-carousel--limited" data-pin-carousel>
+        <button type="button" class="pin-carousel__btn pin-carousel__btn--prev" aria-label="Pin anterior">
+          <span aria-hidden="true">&#8249;</span>
+        </button>
+        <div class="pin-carousel__viewport">
+          <div class="pin-carousel__track">
+            <div class="pin-slide">
+              <button type="button" class="pin-product pin-product--limited">
+                <span class="pin-product__front">
+                  <img src="./data/leaf_pin.png" alt="Pin hoja — edición limitada" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info pin-info--limited">
+                  <span class="pin-info__name">Crecimiento e infancias</span>
+                  <span class="pin-info__price">Participa en nuestro evento: «Infancia segura»</span>
+                </span>
+              </button>
+            </div>
+            <div class="pin-slide">
+              <button type="button" class="pin-product pin-product--limited">
+                <span class="pin-product__front">
+                  <img src="./data/butterfly_pin.png" alt="Pin mariposa — edición limitada" width="240" height="240" decoding="async">
+                </span>
+                <span class="pin-info pin-info--limited">
+                  <span class="pin-info__name">Crecimiento e infancias</span>
+                  <span class="pin-info__price">Participa en nuestro evento: «Infancia segura»</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="pin-carousel__btn pin-carousel__btn--next" aria-label="Pin siguiente edición limitada">
+          <span aria-hidden="true">&#8250;</span>
+        </button>
+        <div class="pin-carousel__dots" role="tablist" aria-label="Elegir pin edición limitada"></div>
+      </div>
+    </div>
+  </section>
 
+  <aside class="donation">
+    <h2>¿Quieres ayudarnos?</h2>
+    <p>
+      Somos Linn y Andy, tecnólogas creativas preocupadas por
+      la fatiga informativa y ansiedad producida por los medios actuales.
+    </p>
+    <p>
+      Con este proyecto queremos mantenerte informado y combatir
+      esa inquietud por hacer un cambio.
+    </p>
+    <p>
+      Con tu participación y donación podemos mantener
+      este proyecto libre de lucro.
+    </p>
+    <button type="button">Donar</button>
+  </aside>
+</div>
