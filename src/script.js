@@ -84,6 +84,267 @@ function initSubtabs(panel) {
   })
 }
 
+function initForoPanel(panel) {
+  if (!panel) return
+
+  const STORAGE_KEY = 'encorto-foro-state'
+  const currentUser = { name: 'Tú', username: '@tuusuario', avatar: 'T' }
+
+  const defaultState = {
+    profile: {
+      name: 'Tu Nombre',
+      username: '@usuario',
+      description: 'Aquí verás tu perfil, tu foto, tu nombre de usuario y tu descripción. Participa en Comunidad y comparte tus resultados.',
+    },
+    posts: [
+      {
+        id: 'com-1',
+        type: 'comunidad',
+        author: 'Alicia',
+        username: '@alicia',
+        avatar: 'A',
+        content: 'Hoy compartí una idea para reciclar botellas en la escuela y muchos se animaron a intentarlo.',
+        createdAt: 'Hace 1 hora',
+        likes: 12,
+        loves: 4,
+        claps: 2,
+        comments: [
+          { id: 'com-1-1', author: 'Carlos', username: '@carlos', content: '¡Qué buena idea! Gracias por inspirar a todos.', createdAt: 'Hace 50 min' },
+        ],
+      },
+      {
+        id: 'ann-1',
+        type: 'anuncios',
+        author: 'Admin',
+        username: '@equipo',
+        avatar: 'E',
+        content: 'El próximo domingo haremos una sesión especial para resolver dudas y compartir resultados de los juegos.',
+        createdAt: 'Hace 2 horas',
+        likes: 18,
+        loves: 7,
+        claps: 3,
+        comments: [
+          { id: 'ann-1-1', author: 'Lucía', username: '@lucia', content: '¡Perfecto, ahí estaré!', createdAt: 'Hace 1 hora' },
+        ],
+      },
+      {
+        id: 'game-1',
+        type: 'juegos',
+        author: 'María',
+        username: '@maria',
+        avatar: 'M',
+        game: 'Trivia — 9/10',
+        content: 'Me faltó solo una pregunta. ¡Muy divertido!',
+        createdAt: 'Hace 30 min',
+        likes: 5,
+        loves: 2,
+        claps: 1,
+        comments: [],
+      },
+    ],
+  }
+
+  function loadState() {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY)
+      return raw ? JSON.parse(raw) : defaultState
+    } catch {
+      return defaultState
+    }
+  }
+
+  function saveState(state) {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  }
+
+  function formatAvatar(profile) {
+    return String(profile.username || profile.name || 'U').trim().charAt(1).toUpperCase() || String(profile.name || 'U').trim().charAt(0).toUpperCase()
+  }
+
+  function getCounts(state) {
+    const posts = state.posts
+    return {
+      posts: posts.filter((post) => post.type === 'comunidad').length + posts.filter((post) => post.type === 'juegos').length,
+      likes: posts.reduce((sum, post) => sum + (post.likes || 0) + (post.loves || 0) + (post.claps || 0), 0),
+      comments: posts.reduce((sum, post) => sum + (post.comments?.length || 0), 0),
+    }
+  }
+
+  function renderProfile(state) {
+    const nameEl = panel.querySelector('[data-foro-name]')
+    const usernameEl = panel.querySelector('[data-foro-username]')
+    const descriptionEl = panel.querySelector('[data-foro-description]')
+    const avatarEl = panel.querySelector('[data-foro-avatar]')
+
+    if (nameEl) nameEl.textContent = state.profile.name
+    if (usernameEl) usernameEl.textContent = state.profile.username
+    if (descriptionEl) descriptionEl.textContent = state.profile.description
+    if (avatarEl) avatarEl.textContent = formatAvatar(state.profile)
+
+    const counts = getCounts(state)
+    const postsCountEl = panel.querySelector('[data-foro-count-posts]')
+    const likesCountEl = panel.querySelector('[data-foro-count-likes]')
+    const commentsCountEl = panel.querySelector('[data-foro-count-comments]')
+
+    if (postsCountEl) postsCountEl.textContent = String(counts.posts)
+    if (likesCountEl) likesCountEl.textContent = String(counts.likes)
+    if (commentsCountEl) commentsCountEl.textContent = String(counts.comments)
+  }
+
+  function buildCommentHtml(comment) {
+    return `
+      <div class="forum-comment">
+        <strong>${comment.author}</strong>
+        <span class="forum-comment-text">${comment.content}</span>
+        <small>${comment.createdAt}</small>
+      </div>`
+  }
+
+  function buildPostCardHtml(post) {
+    const commentCount = post.comments?.length || 0
+    return `
+      <article class="forum-card" data-post-id="${post.id}">
+        <header class="forum-card-header">
+          <div class="forum-avatar">${post.avatar || String(post.author || 'U').trim().charAt(0)}</div>
+          <div>
+            <strong>${post.author}</strong>
+            <span class="forum-username">${post.username}</span>
+            <div class="forum-card-time">${post.createdAt}${post.game ? ` · ${post.game}` : ''}</div>
+          </div>
+        </header>
+        <p class="forum-card-text">${post.content}</p>
+        <div class="forum-card-actions">
+          <button type="button" class="forum-action-btn" data-action="like" data-post-id="${post.id}">❤️ ${post.likes || 0}</button>
+          <button type="button" class="forum-action-btn" data-action="love" data-post-id="${post.id}">💖 ${post.loves || 0}</button>
+          <button type="button" class="forum-action-btn" data-action="clap" data-post-id="${post.id}">👏 ${post.claps || 0}</button>
+          <button type="button" class="forum-action-btn" data-action="toggle-comments" data-post-id="${post.id}">💬 ${commentCount}</button>
+        </div>
+        <div class="forum-comments" data-comments-for="${post.id}">
+          <div class="forum-comments-list">
+            ${post.comments?.map(buildCommentHtml).join('') || '<p class="forum-empty">Aún no hay comentarios.</p>'}
+          </div>
+          <form class="forum-comment-form" data-post-id="${post.id}">
+            <input type="text" name="comment" placeholder="Escribe un comentario..." required />
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      </article>`
+  }
+
+  function renderFeed(type) {
+    const feed = panel.querySelector(`.forum-feed[data-feed="${type}"]`)
+    if (!feed) return
+
+    const posts = state.posts
+      .filter((post) => post.type === type)
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+
+    if (!posts.length) {
+      feed.innerHTML = `<div class="forum-empty">No hay publicaciones en esta sección todavía.</div>`
+      return
+    }
+
+    feed.innerHTML = posts.map(buildPostCardHtml).join('')
+  }
+
+  function renderForo() {
+    renderProfile(state)
+    renderFeed('comunidad')
+    renderFeed('anuncios')
+    renderFeed('juegos')
+  }
+
+  function saveAndRender() {
+    saveState(state)
+    renderForo()
+  }
+
+  let state = loadState()
+  renderForo()
+
+  panel.addEventListener('submit', (event) => {
+    const form = event.target.closest('form')
+    if (!form) return
+
+    if (form.classList.contains('forum-post-form')) {
+      event.preventDefault()
+      const type = form.dataset.type
+      const contentInput = form.querySelector('textarea[name="content"]')
+      const content = contentInput?.value.trim() || ''
+      if (!content) return
+
+      const post = {
+        id: `post-${Date.now()}`,
+        type,
+        author: currentUser.name,
+        username: currentUser.username,
+        avatar: currentUser.avatar,
+        content,
+        createdAt: 'Ahora',
+        likes: 0,
+        loves: 0,
+        claps: 0,
+        comments: [],
+      }
+
+      if (type === 'juegos') {
+        post.game = form.querySelector('input[name="game"]')?.value.trim() || 'Resultado de juego'
+      }
+
+      state.posts.unshift(post)
+      saveAndRender()
+      form.reset()
+      return
+    }
+
+    if (form.classList.contains('forum-comment-form')) {
+      event.preventDefault()
+      const postId = form.dataset.postId
+      const commentInput = form.querySelector('input[name="comment"]')
+      const commentText = commentInput?.value.trim() || ''
+      if (!commentText) return
+
+      const post = state.posts.find((item) => item.id === postId)
+      if (!post) return
+
+      post.comments = post.comments || []
+      post.comments.push({
+        id: `comment-${Date.now()}`,
+        author: currentUser.name,
+        username: currentUser.username,
+        content: commentText,
+        createdAt: 'Ahora',
+      })
+
+      saveAndRender()
+      commentInput.value = ''
+    }
+  })
+
+  panel.addEventListener('click', (event) => {
+    const button = event.target.closest('.forum-action-btn')
+    if (!button) return
+
+    const action = button.dataset.action
+    const postId = button.dataset.postId
+    const post = state.posts.find((item) => item.id === postId)
+    if (!post) return
+
+    if (action === 'toggle-comments') {
+      const card = button.closest('.forum-card')
+      const comments = card?.querySelector('.forum-comments')
+      comments?.classList.toggle('open')
+      return
+    }
+
+    if (action === 'like') post.likes = (post.likes || 0) + 1
+    if (action === 'love') post.loves = (post.loves || 0) + 1
+    if (action === 'clap') post.claps = (post.claps || 0) + 1
+
+    saveAndRender()
+  })
+}
+
 /* =====================================================
   NEWS CARDS — expansión / colapso (panel hoy)
   ===================================================== */
@@ -255,6 +516,10 @@ function loadPanel(name) {
       panel.dataset.loaded = 'true'
 
       initSubtabs(panel)
+
+      if (name === 'foro') {
+        initForoPanel(panel)
+      }
 
       if (name === 'juegos') {
         initJuegosEcIframe(panel)

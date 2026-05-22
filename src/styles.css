@@ -213,18 +213,27 @@ nav {
   margin-left: -2px;
   margin-right: 6px;
   position: relative;
+  background: var(--color-blanco);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-/* TAB COLORES (valores en root.css) */
-.tab[data-tab="inicio"] { background: var(--color-inicio); }
-.tab[data-tab="hoy"] { background: var(--color-hoy); }
-.tab[data-tab="juegos"] { background: var(--color-juegos); }
-.tab[data-tab="foro"] { background: var(--color-foro); }
-.tab[data-tab="funding"] { background: var(--color-rosa); }
-.tab[data-tab="archivo"] { background: var(--color-archivo); }
+
+/* TAB COLORES — accents solo en hover/active */
+.tab[data-tab="inicio"] { --accent: var(--color-inicio); }
+.tab[data-tab="hoy"] { --accent: var(--color-hoy); }
+.tab[data-tab="juegos"] { --accent: var(--color-juegos); }
+.tab[data-tab="foro"] { --accent: var(--color-foro); }
+.tab[data-tab="funding"] { --accent: #e6d255; }
+.tab[data-tab="archivo"] { --accent: var(--color-archivo); }
 
 .tab:hover {
-  font-size: larger;
+  box-shadow: inset 0 0 0 3px var(--accent);
+  transform: translateY(-2px);
   font-weight: 900;
+}
+
+.tab.active {
+  background: var(--accent);
+  box-shadow: 0 4px 0 var(--color-negro);
 }
 
 .layout-root > main {
@@ -240,13 +249,15 @@ nav {
 }
 
 #panel-inicio {
-  background: var(--color-inicio);
+  background: linear-gradient(135deg, var(--color-blanco) 0%, rgba(230, 210, 85, 0.08) 100%);
   container-type: inline-size;
   container-name: inicio;
 }
-#panel-hoy { background: var(--color-hoy); }
+#panel-hoy { 
+  background: linear-gradient(to bottom, var(--color-blanco) 0%, rgba(229, 61, 165, 0.04) 100%); 
+}
 #panel-juegos {
-  background: var(--color-juegos);
+  background: var(--color-blanco);
   padding: 0;
   overflow: hidden;
 }
@@ -265,15 +276,19 @@ nav {
   width: 100%;
   min-height: min(85vh, 720px);
   border: 0;
-  background: var(--color-juegos);
+  background: var(--color-blanco);
 }
 
-#panel-foro { background: var(--color-foro); }
+#panel-foro { 
+  background: linear-gradient(135deg, var(--color-blanco) 0%, rgba(229, 61, 165, 0.04) 100%); 
+}
 #panel-funding {
-  background: var(--color-rosa);
+  background: var(--color-blanco);
   min-width: 0;
 }
-#panel-archivo { background: var(--color-archivo); }
+#panel-archivo { 
+  background: linear-gradient(to bottom right, var(--color-blanco) 0%, rgba(115, 222, 230, 0.04) 100%);
+}
 
 .panel {
   display: none;
@@ -327,8 +342,8 @@ nav {
   font-weight: 300;
   color: var(--color-negro);
   padding: 1.25em 2em;
-  background: var(--color-subtab-face);
-  border: var(--border-width) solid var(--color-subtab-face);
+  background: var(--color-blanco);
+  border: var(--border-width) solid var(--color-negro);
   border-radius: 0.75em;
   transform-style: preserve-3d;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
@@ -345,15 +360,17 @@ nav {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-subtab-shadow);
+  background: var(--color-blanco);
   border-radius: inherit;
+  border: var(--border-width) solid var(--color-negro);
   transform: translate3d(0, 0.75em, -1em);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
               box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 
 .subtab:hover {
-  background: var(--color-subtab-hover-surface);
+  background: var(--color-blanco);
+  box-shadow: inset 0 0 0 3px rgba(229, 61, 165, 0.35);
   transform: translate(0, 0.25em);
   text-transform: uppercase;
   font-weight: 600;
@@ -364,7 +381,7 @@ nav {
   transform: translate3d(0, 0.5em, -1em);
 }
 .subtab:active {
-  background: var(--color-subtab-hover-surface);
+  background: rgba(230, 210, 85, 0.15);
   transform: translate(0, 0.75em);
   text-transform: uppercase;
   font-weight: 600;
@@ -374,9 +391,11 @@ nav {
 .subtab:active::before {
   transform: translate3d(0, 0, -1em);
 }
+
 .subtab.active {
-  background: var(--color-subtab-hover-surface);
+  background: rgba(115, 222, 230, 0.12);
   transform: translate(0, 0.75em);
+  box-shadow: inset 0 0 0 2px var(--color-negro);
   text-transform: uppercase;
   font-weight: 600;
   font-style: italic;
@@ -389,10 +408,553 @@ nav {
 .subpanel { display:none; }
 .subpanel.active { display:block; }
 
+/* ====================================================
+   EDITORIAL AESTHETIC — Decorative Elements & Texture
+   ==================================================== */
+
+/* Base decorative background layer — fixed blobs and gradients */
+.panel::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    /* Pink blob top-right */
+    radial-gradient(ellipse 400px 300px at 85% 10%, rgba(229, 61, 165, 0.08) 0%, transparent 60%),
+    /* Blue blob bottom-left */
+    radial-gradient(ellipse 450px 350px at 12% 88%, rgba(115, 222, 230, 0.08) 0%, transparent 55%),
+    /* Yellow blob center-right */
+    radial-gradient(ellipse 350px 280px at 92% 65%, rgba(230, 210, 85, 0.06) 0%, transparent 50%);
+  background-attachment: fixed;
+  animation: colorCycle 14s ease-in-out infinite;
+}
+
+/* Decorative animated organic blob — corner accent */
+.panel::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
+  background: radial-gradient(circle at 30% 30%, rgba(115, 222, 230, 0.12), transparent 65%);
+  pointer-events: none;
+  animation: floatBlob 8s ease-in-out infinite;
+  mix-blend-mode: multiply;
+}
+
+/* Additional decorative pseudo-element for layered effect on main */
+main::before {
+  content: '';
+  position: fixed;
+  bottom: 40px;
+  left: 60px;
+  width: 160px;
+  height: 160px;
+  border-radius: 38% 62% 58% 42% / 58% 38% 62% 42%;
+  background: radial-gradient(circle at 40% 40%, rgba(230, 210, 85, 0.1), transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: floatBlob 10s ease-in-out infinite reverse;
+  mix-blend-mode: overlay;
+}
+
+/* Halftone dot pattern overlay — subtle texture */
+main::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(229, 61, 165, 0.04) 2px, transparent 2px),
+    radial-gradient(circle at 60% 70%, rgba(115, 222, 230, 0.04) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 80% 10%, rgba(230, 210, 85, 0.03) 1px, transparent 1px);
+  background-size: 120px 140px, 160px 180px, 100px 110px;
+  background-attachment: fixed;
+  animation: dotPulse 12s ease-in-out infinite;
+  mix-blend-mode: multiply;
+}
+
+/* Decorative corner stars and graphic elements */
+.panel {
+  position: relative;
+}
+
+.panel > *:first-child::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 20px solid rgba(229, 61, 165, 0.15);
+  z-index: -1;
+  pointer-events: none;
+  filter: drop-shadow(2px 2px 4px rgba(229, 61, 165, 0.1));
+  animation: swirl 6s ease-in-out infinite;
+}
+
+/* Cut-out shape (circle) for layered effect */
+.panel > *:last-child::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 3%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid rgba(115, 222, 230, 0.15);
+  z-index: -1;
+  pointer-events: none;
+  animation: shimmerGlow 7s ease-in-out infinite;
+}
+
+/* Base button styling — white background with black borders */
+button,
+input[type="submit"],
+input[type="button"],
+.forum-form-row button,
+.forum-action-btn,
+.forum-comment-form button {
+  background: var(--color-blanco);
+  color: var(--color-negro);
+  border: var(--border-width) solid var(--color-negro);
+  padding: 0.85rem 1.2rem;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 0.5em;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.2s ease;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.forum-form-row button:hover,
+.forum-action-btn:hover,
+.forum-comment-form button:hover {
+  box-shadow: inset 0 0 0 3px currentColor;
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Card styling — white background with strong black borders and layered ink effect */
+.forum-profile-card,
+.forum-card,
+.news-card {
+  background: var(--color-blanco);
+  border: var(--border-width) solid var(--color-negro);
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.forum-profile-card::before,
+.forum-card::before,
+.news-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: var(--border-width) solid var(--color-negro);
+  border-radius: 1rem;
+  opacity: 0.1;
+  z-index: -1;
+  mix-blend-mode: multiply;
+}
+
+/* Secondary ink layer overlay on cards — simulates screen print layering */
+.forum-profile-card::after,
+.forum-card::after,
+.news-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(229, 61, 165, 0.02) 0%, transparent 40%),
+    linear-gradient(225deg, rgba(115, 222, 230, 0.01) 0%, transparent 50%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Grid and feed styling */
+.news-grid,
+.forum-feed {
+  display: grid;
+  gap: 18px;
+}
+
+.news-card {
+  background: var(--color-blanco);
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.news-card:hover {
+  box-shadow: 6px 6px 0 rgba(229, 61, 165, 0.25);
+  transform: translateY(-3px) translateX(-2px);
+  border-color: rgba(229, 61, 165, 0.5);
+}
+
+/* Accent color overlays on images — risograph print effect */
+.news-thumb,
+.forum-avatar {
+  position: relative;
+  background: var(--color-blanco);
+  overflow: hidden;
+}
+
+/* Primary print ink layer — multiply blend */
+.news-thumb::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, rgba(230, 210, 85, 0.04) 0%, transparent 40%),
+    linear-gradient(-45deg, rgba(229, 61, 165, 0.03) 0%, transparent 40%);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  z-index: 2;
+}
+
+/* Secondary overlay layer — overlay blend for depth */
+.news-thumb::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(115, 222, 230, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(230, 210, 85, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+  z-index: 2;
+}
+
+/* Avatar styling with blend mode overlays */
+.forum-avatar {
+  display: grid;
+  place-items: center;
+  background: 
+    linear-gradient(135deg, rgba(230, 210, 85, 0.08), rgba(115, 222, 230, 0.08));
+  font-size: 2rem;
+  font-weight: 900;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.forum-avatar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: 
+    conic-gradient(from 45deg, 
+      rgba(229, 61, 165, 0.06) 0deg 120deg,
+      rgba(115, 222, 230, 0.06) 120deg 240deg,
+      rgba(230, 210, 85, 0.06) 240deg 360deg);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Halftone texture on card backgrounds */
+.forum-card,
+.forum-profile-card {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(229, 61, 165, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(115, 222, 230, 0.02) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 40% 60%, rgba(230, 210, 85, 0.015) 1px, transparent 1px);
+  background-size: 200px 200px, 300px 300px, 250px 250px;
+  background-attachment: local;
+}
+
+/* Foro panel styles */
+.forum-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.forum-profile-card,
+.forum-composer,
+.forum-alert,
+.forum-card {
+  background: var(--color-blanco);
+  border: var(--border-default);
+  border-radius: 1.5rem;
+  padding: 22px;
+}
+
+.forum-profile-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.forum-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-negro);
+  background: color-mix(in srgb, var(--color-subtab-face) 24%, var(--color-blanco));
+}
+
+.forum-profile-info h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+.forum-username {
+  display: inline-flex;
+  margin-top: 0.25rem;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 0.95rem;
+}
+
+.forum-profile-description {
+  margin: 0.75rem 0 0;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+}
+
+.forum-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.forum-stat {
+  background: color-mix(in srgb, var(--color-blanco) 96%, var(--color-negro));
+  border: var(--border-width) solid var(--color-border);
+  border-radius: 1rem;
+  padding: 16px;
+  text-align: center;
+}
+
+.forum-stat strong {
+  display: block;
+  font-size: 1.4rem;
+}
+
+.forum-composer-header,
+.forum-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.forum-composer-header strong,
+.forum-alert strong {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.forum-composer-header p,
+.forum-alert p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+}
+
+.forum-post-form {
+  display: grid;
+  gap: 12px;
+}
+
+.forum-post-form textarea,
+.forum-post-form input,
+.forum-comment-form input {
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 16px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.96);
+  font: inherit;
+  color: var(--color-negro);
+}
+
+.forum-post-form input {
+  min-height: 44px;
+}
+
+.forum-form-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.forum-form-row button,
+.forum-card-actions button,
+.forum-comment-form button {
+  border: none;
+  background: var(--color-negro);
+  color: var(--color-blanco);
+  padding: 0.85rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  transition: background 0.2s ease;
+}
+
+.forum-form-row button:hover,
+.forum-card-actions button:hover,
+.forum-comment-form button:hover {
+  background: color-mix(in srgb, var(--color-negro) 82%, var(--color-blanco));
+}
+
+.forum-feed {
+  display: grid;
+  gap: 16px;
+}
+
+.forum-empty {
+  border: var(--border-width) dashed color-mix(in srgb, var(--color-negro) 35%, transparent);
+  padding: 18px;
+  border-radius: 1.25rem;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.forum-card {
+  display: grid;
+  gap: 14px;
+}
+
+.forum-card-header {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.forum-card-text {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.82);
+  line-height: 1.7;
+}
+
+.forum-card-time {
+  display: block;
+  margin-top: 6px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 0.95rem;
+}
+
+.forum-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.forum-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.forum-comments {
+  display: none;
+  gap: 14px;
+}
+
+.forum-comments.open {
+  display: grid;
+}
+
+.forum-comments-list {
+  display: grid;
+  gap: 10px;
+}
+
+.forum-comment {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--color-blanco) 92%, var(--color-negro));
+  border-radius: 1rem;
+}
+
+.forum-comment strong {
+  display: block;
+}
+
+.forum-comment-text {
+  display: block;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.forum-comment small {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 0.85rem;
+}
+
+.forum-comment-form {
+  display: grid;
+  gap: 10px;
+}
+
+@media (max-width: 720px) {
+  .forum-profile-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .forum-profile-card .forum-avatar {
+    margin: 0 auto;
+  }
+
+  .forum-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
 .news-grid {
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  gap:20px;
+  gap: 20px;
+  align-items: stretch;
+  grid-auto-rows: minmax(320px, auto);
 }
 
 .news-empty {
@@ -819,6 +1381,34 @@ nav {
   animation: bounceInUp 900ms cubic-bezier(0.22, 1, 0.36, 1) 650ms both;
 }
 
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.08; }
+  25% { transform: translate(12px, -8px) scale(1.05); opacity: 0.12; }
+  50% { transform: translate(-8px, 15px) scale(0.95); opacity: 0.08; }
+  75% { transform: translate(6px, -12px) scale(1.03); opacity: 0.1; }
+}
+
+@keyframes colorCycle {
+  0%, 100% { mix-blend-mode: multiply; opacity: 0.15; }
+  33% { mix-blend-mode: overlay; opacity: 0.1; }
+  66% { mix-blend-mode: multiply; opacity: 0.12; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.08; transform: scale(1); }
+  50% { opacity: 0.16; transform: scale(1.1); }
+}
+
+@keyframes swirl {
+  0%, 100% { transform: rotate(0deg) translateX(8px); }
+  50% { transform: rotate(180deg) translateX(-8px); }
+}
+
+@keyframes shimmerGlow {
+  0%, 100% { opacity: 0.04; box-shadow: 0 0 0 0 rgba(229, 61, 165, 0.2); }
+  50% { opacity: 0.08; box-shadow: 0 0 30px 15px rgba(115, 222, 230, 0.15); }
+}
+
 @keyframes bounceInUp {
   0%   { transform: translateY(120px) scale(0.88); opacity: 0; }
   55%  { transform: translateY(-18px) scale(1.03); opacity: 1; }
@@ -1142,7 +1732,7 @@ nav {
   transition: box-shadow 0.18s ease, transform 0.18s ease;
   outline: none;
   height: auto;          /* anula el height:180px del .news-card general */
-  min-height: 0;
+  min-height: 340px;
 }
 
 .news-card:focus-visible {
@@ -1158,6 +1748,7 @@ nav {
 .news-thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
+  min-height: 170px;
   background: color-mix(in srgb, var(--color-blanco) 92%, var(--color-negro));
   border-bottom: var(--border-width) solid var(--color-border);
   display: flex;
@@ -1188,6 +1779,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 
 /* Tag de sección */
@@ -1211,10 +1803,20 @@ nav {
   text-transform: uppercase;
   color: var(--color-negro);
   margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 /* Extracto / descripción breve — siempre visible */
 .news-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 12px;

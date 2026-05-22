@@ -6,9 +6,84 @@
     </div>
 
     <div class="subpanel active" data-subpanel="perfil">
-      <div class="forum-section"></div>
+      <div class="forum-panel forum-profile-panel">
+        <section class="forum-profile-card">
+          <div class="forum-avatar" data-foro-avatar>U</div>
+          <div class="forum-profile-info">
+            <div class="forum-profile-meta">
+              <h1 data-foro-name>Tu Nombre</h1>
+              <span class="forum-username" data-foro-username>@usuario</span>
+            </div>
+            <p class="forum-profile-description" data-foro-description>
+              Bienvenido a Foro. Aquí puedes ver tu perfil, tu foto, tu nombre de usuario y tu descripción.
+            </p>
+          </div>
+        </section>
+
+        <section class="forum-stats">
+          <div class="forum-stat">
+            <strong data-foro-count-posts>0</strong>
+            <span>Publicaciones</span>
+          </div>
+          <div class="forum-stat">
+            <strong data-foro-count-likes>0</strong>
+            <span>Reacciones</span>
+          </div>
+          <div class="forum-stat">
+            <strong data-foro-count-comments>0</strong>
+            <span>Comentarios</span>
+          </div>
+        </section>
+      </div>
     </div>
-    <div class="subpanel" data-subpanel="comunidad"><div class="forum-section"></div></div>
-    <div class="subpanel" data-subpanel="anuncios"><div class="forum-section"></div></div>
-    <div class="subpanel" data-subpanel="juegos"><div class="forum-section"></div></div>
+
+    <div class="subpanel" data-subpanel="comunidad">
+      <div class="forum-panel">
+        <section class="forum-composer">
+          <div class="forum-composer-header">
+            <strong>Publica en Comunidad</strong>
+            <p>Todos pueden compartir ideas, noticias y resultados aquí.</p>
+          </div>
+          <form class="forum-post-form" data-type="comunidad">
+            <textarea name="content" placeholder="¿Qué quieres contar hoy?" required></textarea>
+            <div class="forum-form-row">
+              <button type="submit">Publicar</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="forum-feed" data-feed="comunidad"></section>
+      </div>
+    </div>
+
+    <div class="subpanel" data-subpanel="anuncios">
+      <div class="forum-panel">
+        <section class="forum-alert">
+          <strong>Anuncios</strong>
+          <p>Solo los administradores pueden publicar aquí. La comunidad puede reaccionar y comentar las noticias oficiales.</p>
+        </section>
+
+        <section class="forum-feed" data-feed="anuncios"></section>
+      </div>
+    </div>
+
+    <div class="subpanel" data-subpanel="juegos">
+      <div class="forum-panel">
+        <section class="forum-composer">
+          <div class="forum-composer-header">
+            <strong>Comparte tus resultados de juegos</strong>
+            <p>Después de terminar una trivia o juego, publica tu puntaje y que lo vea la comunidad.</p>
+          </div>
+          <form class="forum-post-form" data-type="juegos">
+            <input type="text" name="game" placeholder="Ej. Trivia — 8/10" required />
+            <textarea name="content" placeholder="Cuenta cómo te fue en el juego..." required></textarea>
+            <div class="forum-form-row">
+              <button type="submit">Compartir resultado</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="forum-feed" data-feed="juegos"></section>
+      </div>
+    </div>
 

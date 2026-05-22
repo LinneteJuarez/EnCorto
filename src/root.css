@@ -5,30 +5,30 @@
 
 :root {
   /* Paleta principal (un solo hex por tono) */
-  --color-amarillo: #ffd700;
-  --color-morado: #8073c7;
-  --color-azul: #00e5e5;
+  --color-amarillo: #e6d255;
+  --color-morado: #e53da5;
+  --color-azul: #73dee6;
   --color-naranja: #ff6c54;
   --color-verde: #80de73;
 
   /* Pestaña Funding */
-  --color-rosa: #ff00a8;
+  --color-rosa: #e53da5;
 
   /* Secciones → paleta */
   --color-inicio: var(--color-amarillo);
   --color-hoy: var(--color-morado);
   --color-juegos: var(--color-azul);
-  --color-foro: var(--color-naranja);
-  --color-archivo: var(--color-verde);
+  --color-foro: var(--color-morado);
+  --color-archivo: var(--color-azul);
 
   /* Neutros */
   --color-blanco: #ffffff;
   --color-negro: #000000;
 
   /* Superficies interactivas (subpestañas “Lo de hoy” / “Archivo”) */
-  --color-subtab-face: var(--color-rosa);
-  --color-subtab-shadow: #ff00aa5d;
-  --color-subtab-hover-surface: #ffe9e9;
+  --color-subtab-face: var(--color-blanco);
+  --color-subtab-shadow: rgba(229, 61, 165, 0.25);
+  --color-subtab-hover-surface: rgba(229, 61, 165, 0.08);
 
   /* Tipografía base */
   --font-sans: HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
