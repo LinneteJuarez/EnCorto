@@ -47,15 +47,22 @@
   --header-min-height: 64px;
   --logo-img-height: 40px;
 
-  /* Apilamiento (header sobre paneles) */
+  /* Apilamiento: papel → editorial → UI */
+  --z-backdrop: 0;
+  --z-editorial: 1;
+  --z-layout: 2;
   --z-header: 20;
   --z-main: 10;
   --z-tab-active-notch: 20;
+
+  /* Centro del gradiente de fondo (actualizado por script.js) */
+  --bg-x: 50%;
+  --bg-y: 50%;
 }
 
 html {
   color: var(--color-negro);
-  background: var(--color-blanco);
+  background: transparent;
 }
 
 body {

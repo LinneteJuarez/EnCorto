@@ -1,62 +1,52 @@
-<div class="subtabs">
-    <button class="subtab active" data-sub="global">Global</button>
-    <button class="subtab" data-sub="politica">Política</button>
-    <button class="subtab" data-sub="economia">Economía</button>
-    <button class="subtab" data-sub="tec">Tec & Ciencia</button>
-    <button class="subtab" data-sub="deportes">Deportes</button>
-    <button class="subtab" data-sub="espectaculos">Espectáculos</button>
-    <button class="subtab" data-sub="felices">Noticias Felices</button>
-  </div>
-
-  <!-- GLOBAL -->
-  <div class="subpanel active" data-subpanel="global">
-    <div class="news-grid">
-
-      <article class="news-card" tabindex="0">
-        <div class="news-thumb"><span class="news-thumb-label">IMG</span></div>
-        <div class="news-body">
-          <p class="news-section-tag">Global</p>
-          <h2 class="news-title">ARCHIVO · GLOBAL 1</h2>
-          <p class="news-excerpt">Noticia archivada.</p>
-          <div class="news-expanded">
-            <p>Contenido completo del archivo.</p>
-            <button class="news-close">Cerrar ↑</button>
-          </div>
+<div class="panel-layout">
+  <aside class="panel-sidebar" aria-label="Archivo">
+    <h2 class="panel-sidebar__heading">Archivo</h2>
+    <div class="sidebar-scroll sidebar-scroll--vertical" data-sidebar-scroll>
+      <button type="button" class="sidebar-scroll__btn sidebar-scroll__btn--prev" aria-label="Subir">
+        <span aria-hidden="true">&#9650;</span>
+      </button>
+      <div class="sidebar-scroll__viewport">
+        <div class="sidebar-scroll__content">
+          <div class="archivo-dates" data-archivo-dates aria-label="Fechas anteriores"></div>
+          <nav class="subtabs subtabs--sidebar" aria-label="Categorías">
+            <button type="button" class="subtab active" data-sub="global">Global</button>
+            <button type="button" class="subtab" data-sub="politica">Política</button>
+            <button type="button" class="subtab" data-sub="economia">Economía</button>
+            <button type="button" class="subtab" data-sub="tec">Tec &amp; Ciencia</button>
+            <button type="button" class="subtab" data-sub="deportes">Deportes</button>
+            <button type="button" class="subtab" data-sub="espectaculos">Espectáculos</button>
+            <button type="button" class="subtab" data-sub="felices">Noticias Felices</button>
+          </nav>
         </div>
-      </article>
-
+      </div>
+      <button type="button" class="sidebar-scroll__btn sidebar-scroll__btn--next" aria-label="Bajar">
+        <span aria-hidden="true">&#9660;</span>
+      </button>
     </div>
-  </div>
+  </aside>
+  <div class="panel-main">
 
-  <!-- POLÍTICA -->
+  <div class="subpanel active" data-subpanel="global">
+    <div class="news-grid"></div>
+  </div>
   <div class="subpanel" data-subpanel="politica">
-    <div class="news-grid">
-      <!-- mismo article -->
-    </div>
+    <div class="news-grid"></div>
   </div>
-
-  <!-- ECONOMÍA -->
   <div class="subpanel" data-subpanel="economia">
     <div class="news-grid"></div>
   </div>
-
-  <!-- TEC -->
   <div class="subpanel" data-subpanel="tec">
     <div class="news-grid"></div>
   </div>
-
-  <!-- DEPORTES -->
   <div class="subpanel" data-subpanel="deportes">
     <div class="news-grid"></div>
   </div>
-
-  <!-- ESPECTÁCULOS -->
   <div class="subpanel" data-subpanel="espectaculos">
     <div class="news-grid"></div>
   </div>
-
-  <!-- FELICES -->
   <div class="subpanel" data-subpanel="felices">
     <div class="news-grid"></div>
   </div>
 
+  </div>
+</div>

@@ -41,6 +41,7 @@ tabs.forEach((tab) => {
 
       // cargar contenido si hace falta
       loadPanel(name)
+      setBackdropSection(name)
 
       if (name === 'inicio') runInicioEnter(nextPanel)
     }
@@ -66,7 +67,7 @@ tabs.forEach((tab) => {
   ===================================================== */
 
 function initSubtabs(panel) {
-  const subtabs = panel.querySelectorAll('.subtab')
+  const subtabs = panel.querySelectorAll('.subtabs--sidebar .subtab, .subtabs:not(.subtabs--sidebar) .subtab')
   const subpanels = panel.querySelectorAll('.subpanel')
 
   if (!subtabs.length) return
@@ -80,6 +81,128 @@ function initSubtabs(panel) {
 
       tab.classList.add('active')
       panel.querySelector(`.subpanel[data-subpanel="${target}"]`)?.classList.add('active')
+    })
+  })
+}
+
+function formatTodayLong(timeZone) {
+  const label = new Intl.DateTimeFormat('es-MX', {
+    timeZone,
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date())
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}
+
+function formatArchivoDateLabel(dayKey) {
+  const [y, m, d] = dayKey.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  return date.toLocaleDateString('es-MX', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+function uniqueArchiveDates(posts) {
+  const today = todayCalendarKey(NOTICIAS_TZ)
+  const keys = new Set()
+  for (const p of posts) {
+    const key = calendarDayKey(p.date, NOTICIAS_TZ)
+    if (key && key < today) keys.add(key)
+  }
+  return [...keys].sort((a, b) => b.localeCompare(a))
+}
+
+function initHoySidebar(panel) {
+  const dateEl = panel.querySelector('[data-today-label]')
+  if (!dateEl) return
+  const todayKey = todayCalendarKey(NOTICIAS_TZ)
+  dateEl.dateTime = todayKey
+  dateEl.textContent = formatTodayLong(NOTICIAS_TZ)
+}
+
+function initSidebarScroll(panel) {
+  const root = panel.querySelector('[data-sidebar-scroll]')
+  if (!root) return
+
+  const viewport = root.querySelector('.sidebar-scroll__viewport')
+  const content = root.querySelector('.sidebar-scroll__content')
+  const prevBtn = root.querySelector('.sidebar-scroll__btn--prev')
+  const nextBtn = root.querySelector('.sidebar-scroll__btn--next')
+  if (!viewport || !content || !prevBtn || !nextBtn) return
+
+  const step = () => Math.max(72, viewport.clientHeight * 0.72)
+  let offset = 0
+
+  const maxOffset = () => Math.max(0, content.scrollHeight - viewport.clientHeight)
+
+  const apply = () => {
+    offset = Math.min(Math.max(0, offset), maxOffset())
+    content.style.transform = offset ? `translateY(${-offset}px)` : ''
+    prevBtn.disabled = offset <= 0
+    nextBtn.disabled = offset >= maxOffset() - 1
+  }
+
+  if (!root.dataset.scrollReady) {
+    prevBtn.addEventListener('click', () => {
+      offset -= step()
+      apply()
+    })
+    nextBtn.addEventListener('click', () => {
+      offset += step()
+      apply()
+    })
+    const ro = new ResizeObserver(() => apply())
+    ro.observe(viewport)
+    ro.observe(content)
+    root.dataset.scrollReady = 'true'
+    root._sidebarScrollApply = apply
+  }
+
+  offset = Math.min(offset, maxOffset())
+  root._sidebarScrollApply?.()
+}
+
+function initArchivoDates(panel, archivePosts) {
+  const container = panel.querySelector('[data-archivo-dates]')
+  if (!container) return
+
+  const dates = uniqueArchiveDates(archivePosts)
+  if (!dates.length) {
+    container.innerHTML = '<p class="panel-sidebar__empty">No hay fechas en el archivo.</p>'
+    delete panel.dataset.selectedArchivoDate
+    return
+  }
+
+  if (!panel.dataset.selectedArchivoDate || !dates.includes(panel.dataset.selectedArchivoDate)) {
+    panel.dataset.selectedArchivoDate = dates[0]
+  }
+
+  const selected = panel.dataset.selectedArchivoDate
+
+  container.innerHTML = dates
+    .map(
+      (key) => `
+    <button type="button" class="subtab archivo-date-btn${key === selected ? ' active' : ''}" data-archivo-date="${key}">
+      ${formatArchivoDateLabel(key)}
+    </button>`,
+    )
+    .join('')
+
+  container.querySelectorAll('[data-archivo-date]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      panel.dataset.selectedArchivoDate = btn.dataset.archivoDate
+      container.querySelectorAll('[data-archivo-date]').forEach((b) => {
+        b.classList.toggle('active', b === btn)
+      })
+      renderNoticiasIntoPanel(panel, 'archivo').catch((err) => {
+        console.warn('Error cargando archivo:', err)
+      })
+      initSidebarScroll(panel)
     })
   })
 }
@@ -525,10 +648,24 @@ function loadPanel(name) {
         initJuegosEcIframe(panel)
       }
 
-      if (name === 'hoy' || name === 'archivo') {
+      if (name === 'hoy') {
+        initHoySidebar(panel)
         renderNoticiasIntoPanel(panel, name).catch((err) => {
           console.warn('Error cargando noticias:', err)
         })
+      }
+
+      if (name === 'archivo') {
+        loadNoticias()
+          .then((all) => {
+            const archivePosts = filterPostsByNewsDay(all, 'archivo')
+            initArchivoDates(panel, archivePosts)
+            initSidebarScroll(panel)
+            return renderNoticiasIntoPanel(panel, name, archivePosts)
+          })
+          .catch((err) => {
+            console.warn('Error cargando archivo:', err)
+          })
       }
 
       if (name === 'inicio') {
@@ -537,6 +674,7 @@ function loadPanel(name) {
 
       if (name === 'funding') {
         panel.querySelectorAll('[data-pin-carousel]').forEach(initPinCarousel)
+        initPinCart(panel)
       }
     })
 }
@@ -546,6 +684,61 @@ function loadPanel(name) {
   ===================================================== */
 
 loadPanel('inicio')
+setBackdropSection('inicio')
+
+/* =====================================================
+  Fondo global (gradiente + textura, sigue el mouse)
+  ===================================================== */
+
+function setBackdropSection(section) {
+  document.body.dataset.bgSection = section || 'inicio'
+}
+
+function initPinCart(panel) {
+  panel.querySelectorAll('.pin-cart-btn').forEach((btn) => {
+    btn.addEventListener('pointerdown', (e) => e.stopPropagation())
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      btn.classList.add('is-added')
+      window.setTimeout(() => btn.classList.remove('is-added'), 700)
+    })
+  })
+}
+
+function initSiteBackdrop() {
+  const root = document.documentElement
+
+  const setGradientCenter = (x, y) => {
+    root.style.setProperty('--bg-x', `${x}%`)
+    root.style.setProperty('--bg-y', `${y}%`)
+  }
+
+  setGradientCenter(50, 50)
+
+  const updateFromPointer = (clientX, clientY) => {
+    const x = (clientX / window.innerWidth) * 100
+    const y = (clientY / window.innerHeight) * 100
+    setGradientCenter(x, y)
+  }
+
+  window.addEventListener('mousemove', (e) => updateFromPointer(e.clientX, e.clientY), {
+    passive: true,
+  })
+
+  window.addEventListener(
+    'touchmove',
+    (e) => {
+      const touch = e.touches[0]
+      if (touch) updateFromPointer(touch.clientX, touch.clientY)
+    },
+    {passive: true},
+  )
+
+  window.addEventListener('mouseleave', () => setGradientCenter(50, 50))
+}
+
+initSiteBackdrop()
 
 /* =====================================================
   NOTICIAS (Sanity + Portable Text)
@@ -718,9 +911,15 @@ function groupByCategory(posts) {
   return grouped
 }
 
-async function renderNoticiasIntoPanel(panelEl, panelName) {
-  const allPosts = await loadNoticias()
-  const posts = filterPostsByNewsDay(allPosts, panelName)
+async function renderNoticiasIntoPanel(panelEl, panelName, preloadedPosts) {
+  const allPosts = preloadedPosts ?? (await loadNoticias())
+  let posts = filterPostsByNewsDay(allPosts, panelName)
+
+  if (panelName === 'archivo' && panelEl.dataset.selectedArchivoDate) {
+    const selected = panelEl.dataset.selectedArchivoDate
+    posts = posts.filter((p) => calendarDayKey(p.date, NOTICIAS_TZ) === selected)
+  }
+
   const grouped = groupByCategory(posts)
 
   for (const [category, list] of Object.entries(grouped)) {
@@ -734,7 +933,7 @@ async function renderNoticiasIntoPanel(panelEl, panelName) {
       const emptyMsg =
         panelName === 'hoy'
           ? 'No hay noticias de hoy en esta categoría.'
-          : 'Aún no hay noticias en esta categoría.'
+          : 'No hay noticias en esta categoría para la fecha seleccionada.'
       grid.innerHTML = `<p class="news-empty">${emptyMsg}</p>`
       continue
     }

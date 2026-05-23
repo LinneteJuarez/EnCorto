@@ -1,12 +1,17 @@
-<div class="subtabs">
-    <button class="subtab active" data-sub="global">Global</button>
-    <button class="subtab" data-sub="politica">Política</button>
-    <button class="subtab" data-sub="economia">Economía</button>
-    <button class="subtab" data-sub="tec">Tec &amp; Ciencia</button>
-    <button class="subtab" data-sub="deportes">Deportes</button>
-    <button class="subtab" data-sub="espectaculos">Espectáculos</button>
-    <button class="subtab" data-sub="felices">Noticias Felices</button>
-  </div>
+<div class="panel-layout">
+  <aside class="panel-sidebar" aria-label="Lo de hoy">
+    <time class="panel-sidebar__date" data-today-label datetime=""></time>
+    <nav class="subtabs subtabs--sidebar" aria-label="Categorías">
+      <button type="button" class="subtab active" data-sub="global">Global</button>
+      <button type="button" class="subtab" data-sub="politica">Política</button>
+      <button type="button" class="subtab" data-sub="economia">Economía</button>
+      <button type="button" class="subtab" data-sub="tec">Tec &amp; Ciencia</button>
+      <button type="button" class="subtab" data-sub="deportes">Deportes</button>
+      <button type="button" class="subtab" data-sub="espectaculos">Espectáculos</button>
+      <button type="button" class="subtab" data-sub="felices">Noticias Felices</button>
+    </nav>
+  </aside>
+  <div class="panel-main">
 
   <!-- GLOBAL -->
   <div class="subpanel active" data-subpanel="global">
@@ -330,3 +335,5 @@
     </div>
   </div>
 
+  </div>
+</div>
