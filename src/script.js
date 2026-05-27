@@ -187,7 +187,7 @@ function initArchivoDates(panel, archivePosts) {
   container.innerHTML = dates
     .map(
       (key) => `
-    <button type="button" class="subtab archivo-date-btn${key === selected ? ' active' : ''}" data-archivo-date="${key}">
+    <button type="button" class="archivo-date-btn${key === selected ? ' active' : ''}" data-archivo-date="${key}">
       ${formatArchivoDateLabel(key)}
     </button>`,
     )
@@ -202,7 +202,6 @@ function initArchivoDates(panel, archivePosts) {
       renderNoticiasIntoPanel(panel, 'archivo').catch((err) => {
         console.warn('Error cargando archivo:', err)
       })
-      initSidebarScroll(panel)
     })
   })
 }
@@ -660,7 +659,6 @@ function loadPanel(name) {
           .then((all) => {
             const archivePosts = filterPostsByNewsDay(all, 'archivo')
             initArchivoDates(panel, archivePosts)
-            initSidebarScroll(panel)
             return renderNoticiasIntoPanel(panel, name, archivePosts)
           })
           .catch((err) => {

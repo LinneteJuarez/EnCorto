@@ -6,7 +6,7 @@
 :root {
   /* Paleta principal (un solo hex por tono) */
   --color-amarillo: #e6d255;
-  --color-morado: #e53da5;
+  --color-morado: #AF39FF;
   --color-azul: #73dee6;
   --color-naranja: #ff6c54;
   --color-verde: #80de73;
@@ -18,7 +18,7 @@
   --color-inicio: var(--color-amarillo);
   --color-hoy: var(--color-morado);
   --color-juegos: var(--color-azul);
-  --color-foro: var(--color-morado);
+  --color-foro: var(--color-rosa);
   --color-archivo: var(--color-azul);
 
   /* Neutros */
@@ -60,9 +60,22 @@
   --bg-y: 50%;
 }
 
+@property --bg-x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --bg-y {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
 html {
   color: var(--color-negro);
   background: transparent;
+  transition: --bg-x 1.35s ease-out, --bg-y 1.35s ease-out;
 }
 
 body {

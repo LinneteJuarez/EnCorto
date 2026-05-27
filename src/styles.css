@@ -183,81 +183,18 @@ body[data-bg-section='archivo'] {
   pointer-events: none;
   background-color: var(--color-blanco);
   background-image:
+  url('./data/noise.png'),
     radial-gradient(
-      circle 95vmax at var(--bg-x) var(--bg-y),
+      circle 90vmax at var(--bg-x) var(--bg-y),
       color-mix(in srgb, var(--bg-tone-1) 72%, var(--color-blanco)) 0%,
       color-mix(in srgb, var(--bg-tone-2) 40%, var(--color-blanco)) 48%,
       color-mix(in srgb, var(--bg-tone-3) 45%, var(--color-blanco)) 100%
     );
-  background-size: cover, cover;
+  background-size:auto, cover;
   background-position: center, center;
   background-repeat: repeat, no-repeat;
   background-blend-mode: multiply, normal;
-  transition: background-image 0.65s ease;
 }
-
-#editorial-layer {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-editorial);
-  pointer-events: none;
-  overflow: hidden;
-}
-
-#editorial-layer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(ellipse 420px 320px at 85% 12%, rgba(229, 61, 165, 0.22) 0%, transparent 62%),
-    radial-gradient(ellipse 480px 360px at 10% 86%, rgba(115, 222, 230, 0.22) 0%, transparent 58%),
-    radial-gradient(ellipse 380px 300px at 90% 62%, rgba(230, 210, 85, 0.18) 0%, transparent 52%),
-    radial-gradient(circle at 20% 50%, rgba(229, 61, 165, 0.08) 2px, transparent 2px),
-    radial-gradient(circle at 60% 70%, rgba(115, 222, 230, 0.08) 1.5px, transparent 1.5px);
-  background-size: auto, auto, auto, 120px 140px, 160px 180px;
-  animation: colorCycle 14s ease-in-out infinite;
-}
-
-#editorial-layer::after {
-  content: '';
-  position: absolute;
-  bottom: 8%;
-  right: 4%;
-  width: min(320px, 42vw);
-  height: min(320px, 42vw);
-  border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
-  background: radial-gradient(circle at 30% 30%, rgba(115, 222, 230, 0.35), transparent 68%);
-  animation: floatBlob 8s ease-in-out infinite;
-  mix-blend-mode: multiply;
-}
-
-.editorial-accent {
-  position: absolute;
-  pointer-events: none;
-}
-
-.editorial-accent--triangle {
-  top: 18%;
-  right: 12%;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 24px solid rgba(229, 61, 165, 0.35);
-  filter: drop-shadow(2px 2px 4px rgba(229, 61, 165, 0.15));
-  animation: swirl 6s ease-in-out infinite;
-}
-
-.editorial-accent--ring {
-  top: 48%;
-  left: 6%;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid rgba(115, 222, 230, 0.35);
-  animation: shimmerGlow 7s ease-in-out infinite;
-}
-
 .layout-root {
   display: flex;
   flex-direction: column;
@@ -279,15 +216,17 @@ header {
   min-width: 0;
   width: 100%;
   max-width: 100%;
-  background: color-mix(in srgb, var(--color-amarillo) 77%, transparent);
-  border-bottom: var(--border-width) solid var(--color-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: /*color-mix(in srgb, var(--color-amarillo) 77%, transparent)*/ transparent;
+  box-shadow: 0 2px 0 var(--color-negro);
   position: relative;
   z-index: 20;
 }
 
 #logo.tab,
 .tab--brand {
-  --accent: var(--color-inicio);
+  /*--accent: var(--color-inicio);*/
   min-width: auto;
   max-width: none;
   flex: 0 0 auto;
@@ -310,13 +249,15 @@ header {
   order: -1;
 }
 
-#logo img {
+#logo img,
+#logo object {
   display: block;
   height: 40px;
   width: auto;
   max-width: min(220px, 42vw);
   object-fit: contain;
   object-position: left center;
+  pointer-events: none;
 }
 
 nav {
@@ -324,10 +265,10 @@ nav {
   margin-left: auto;
   align-items: flex-end;
   min-width: 0;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   padding-left: 12px;
   padding-right: 12px;
-  flex-direction: row-reverse;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
   row-gap: 4px;
@@ -351,14 +292,11 @@ nav {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: var(--border-default);
-  border-bottom: none;
-  border-top-left-radius: var(--radius-tab-tl);
-  border-top-right-radius: var(--radius-tab-tr);
+
   margin-left: -2px;
   margin-right: 6px;
   position: relative;
-  background: color-mix(in srgb, var(--color-blanco) 55%, transparent);
+  background: color-mix(in srgb, var(--color-amarillo) 15%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
@@ -373,6 +311,8 @@ nav {
 .tab:hover {
   transform: translateY(-2px);
   font-weight: 900;
+  font-style: italic;
+  background: color-mix(in srgb, var(--color-rosa) 25%, transparent);
 }
 
 .tab.active {
@@ -411,12 +351,14 @@ nav {
   min-height: 0;
 }
 
-#panel-hoy .panel-sidebar {
+#panel-hoy .panel-sidebar,
+#panel-archivo .panel-sidebar {
   overflow-y: auto;
   scrollbar-width: none;
 }
 
-#panel-hoy .panel-sidebar::-webkit-scrollbar {
+#panel-hoy .panel-sidebar::-webkit-scrollbar,
+#panel-archivo .panel-sidebar::-webkit-scrollbar {
   display: none;
 }
 #panel-juegos {
@@ -634,12 +576,57 @@ nav {
 .archivo-dates {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-.archivo-dates .subtab {
-  font-size: 0.8rem;
-  padding: 1em 1.25em;
+.archivo-date-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: left;
+  text-transform: capitalize;
+  color: var(--color-negro);
+  cursor: pointer;
+  background: color-mix(in srgb, var(--color-archivo) 22%, transparent);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: 0.65em;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.archivo-date-btn:hover {
+  background: color-mix(in srgb, var(--color-archivo) 38%, transparent);
+}
+
+.archivo-date-btn.active {
+  background: color-mix(in srgb, var(--color-archivo) 48%, var(--color-blanco));
+  box-shadow: inset 0 0 0 2px var(--color-negro);
+}
+
+button.archivo-date-btn,
+button.archivo-date-btn:hover,
+button.archivo-date-btn:active,
+button.archivo-date-btn:focus-visible {
+  text-transform: capitalize;
+  letter-spacing: normal;
+  font-weight: 800;
+  font-style: normal;
+  opacity: 1;
+  transform: none;
+}
+
+button.archivo-date-btn:hover {
+  box-shadow: none;
+}
+
+button.archivo-date-btn.active,
+button.archivo-date-btn.active:hover {
+  box-shadow: inset 0 0 0 2px var(--color-negro);
 }
 
 .subtabs {
@@ -671,7 +658,6 @@ nav {
   display: inline-block;
   cursor: pointer;
   outline: none;
-  border: 0;
   vertical-align: middle;
   text-decoration: none;
   font-family: inherit;
@@ -679,14 +665,19 @@ nav {
   font-weight: 300;
   color: var(--color-negro);
   padding: 1.25em 2em;
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-blanco) 42%, transparent);
   border: var(--border-width) solid var(--color-negro);
   border-radius: 0.75em;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   isolation: isolate;
   transform-style: preserve-3d;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
               background 150ms cubic-bezier(0, 0, 0.58, 1);
-  margin-bottom: 0.75em; /* deja espacio para la "sombra" del ::before */
+  margin-bottom: 0.75em;
+  text-transform: none;
+  letter-spacing: normal;
+  box-shadow: none;
 }
 
 .subtab::before {
@@ -699,28 +690,35 @@ nav {
   right: 0;
   bottom: 0;
   z-index: -1;
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-blanco) 18%, transparent);
   border-radius: inherit;
-  border: var(--border-width) solid var(--color-negro);
+  border: none;
+  box-shadow: 0 0.7em 1.6em rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transform: translate3d(0, 0.75em, -1em);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
-              box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+              box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+              background 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 
 .subtab:hover {
-  background: var(--color-blanco);
-  box-shadow: inset 0 0 0 3px rgba(229, 61, 165, 0.35);
+  background: color-mix(in srgb, var(--color-blanco) 58%, transparent);
+  box-shadow: inset 0 0 0 2px rgba(229, 61, 165, 0.35);
   transform: translate(0, 0.25em);
   text-transform: uppercase;
   font-weight: 600;
   font-style: italic;
+  opacity: 1;
 }
 
 .subtab:hover::before {
   transform: translate3d(0, 0.5em, -1em);
+  box-shadow: 0 0.55em 1.35em rgba(0, 0, 0, 0.2);
 }
+
 .subtab:active {
-  background: rgba(230, 210, 85, 0.15);
+  background: color-mix(in srgb, var(--color-amarillo) 22%, transparent);
   transform: translate(0, 0.75em);
   text-transform: uppercase;
   font-weight: 600;
@@ -729,10 +727,11 @@ nav {
 
 .subtab:active::before {
   transform: translate3d(0, 0, -1em);
+  box-shadow: 0 0.2em 0.8em rgba(0, 0, 0, 0.12);
 }
 
 .subtab.active {
-  background: rgba(115, 222, 230, 0.12);
+  background: color-mix(in srgb, var(--color-azul) 28%, transparent);
   transform: translate(0, 0.75em);
   box-shadow: inset 0 0 0 2px var(--color-negro);
   text-transform: uppercase;
@@ -742,6 +741,15 @@ nav {
 
 .subtab.active::before {
   transform: translate3d(0, 0, -1em);
+  box-shadow: 0 0.15em 0.65em rgba(0, 0, 0, 0.1);
+}
+
+button.subtab,
+button.subtab:hover,
+button.subtab:active,
+button.subtab:focus-visible {
+  letter-spacing: normal;
+  opacity: 1;
 }
 
 .subpanel { display:none; }
@@ -758,7 +766,7 @@ input[type="button"],
 .forum-form-row button,
 .forum-action-btn,
 .forum-comment-form button {
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-rosa) 55%, transparent);
   color: var(--color-negro);
   border: var(--border-width) solid var(--color-negro);
   padding: 0.85rem 1.2rem;
@@ -799,6 +807,24 @@ header button.tab {
 header #logo.tab {
   font-weight: 300;
   padding: 0 10px;
+}
+
+#logo.tab,
+#logo.tab:hover,
+#logo.tab:focus,
+#logo.tab:focus-visible,
+#logo.tab:active,
+#logo.tab.active {
+  border: none;
+  border-bottom: none;
+  box-shadow: none;
+  background: transparent;
+  transform: none;
+  opacity: 1;
+}
+
+#logo.tab.active::after {
+  display: none;
 }
 
 /* Pines: sin borde/sombra del hover genérico de button */
@@ -1614,8 +1640,9 @@ button.pin-cart-btn.is-added {
 }
 
 .donation {
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-blanco) 52%, transparent);
   border: none;
+  border-radius: 32px;
   padding:16px;
   display:flex;
   flex-direction:column;
@@ -1623,7 +1650,6 @@ button.pin-cart-btn.is-added {
 }
 
 .donation textarea {
-  resize: none;
   height: 120px;
   border: none;
   padding: 8px;
@@ -1655,8 +1681,8 @@ button.pin-cart-btn.is-added {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
-  width: clamp(140px, 22vmin, 240px);
-  aspect-ratio: 66.22 / 64.8;
+  width: clamp(220px, 58vw, 420px);
+  aspect-ratio: 275.75 / 48.88;
   filter: drop-shadow(3px 8px 2px rgba(0, 0, 0, 0.5));
 }
 
@@ -1775,7 +1801,7 @@ button.pin-cart-btn.is-added {
   transform: translate(-50%, -50%);
   z-index: 2;
   font-size: clamp(0.95rem, 1.35vw + 0.65rem, 1.5rem);
-  font-weight: 100;
+  font-weight: 600;
   font-style: italic;
   color: var(--color-azul);
   white-space: nowrap;
@@ -1828,21 +1854,31 @@ button.pin-cart-btn.is-added {
     grid-area: brand;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-self: stretch;
     padding: 6px 10px;
     background: transparent;
     width: 100%;
   }
 
+  .layout-root #logo.tab,
+  .layout-root #logo.tab:hover,
   .layout-root #logo.tab.active {
-    background: var(--accent);
-    box-shadow: 0 4px 0 var(--color-negro);
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    transform: none;
   }
 
-  .layout-root #logo img {
+  .layout-root #logo.tab.active::after {
+    display: none;
+  }
+
+  .layout-root #logo img,
+  .layout-root #logo object {
     height: 32px;
     max-width: min(200px, 75vw);
+    object-position: right center;
   }
 
   .layout-root > main {
@@ -1963,6 +1999,12 @@ button.pin-cart-btn.is-added {
   .archivo-dates {
     flex-direction: column;
     flex-wrap: nowrap;
+    margin-bottom: 12px;
+  }
+
+  .archivo-date-btn {
+    font-size: 0.85rem;
+    padding: 8px 10px;
   }
 
   .subtabs {
@@ -2012,7 +2054,7 @@ button.pin-cart-btn.is-added {
     border-radius: 0 12px 5px 0;
   }
 
-  /* El título usa div.h1 + .upper/.lower span (no hay <h1> ni <p> en inicio) */
+
   .inicio .upper span,
   .inicio .lower span {
     font-size: clamp(0.72rem, 5.2vw + 0.2rem, 2.6rem);
@@ -2056,7 +2098,7 @@ button.pin-cart-btn.is-added {
   flex-direction: column;
   transition: box-shadow 0.18s ease, transform 0.18s ease;
   outline: none;
-  height: auto;          /* anula el height:180px del .news-card general */
+  height: auto;        
   min-height: 340px;
 }
 
@@ -2114,8 +2156,13 @@ button.pin-cart-btn.is-added {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--color-azul);
   margin: 0;
+}
+
+#panel-hoy .news-section-tag,
+#panel-archivo .news-section-tag {
+  display: none;
 }
 
 /* Título principal */
@@ -2126,7 +2173,7 @@ button.pin-cart-btn.is-added {
   letter-spacing: -0.02em;
   line-height: 1.15;
   text-transform: uppercase;
-  color: var(--color-negro);
+  color: var(--color-rosa);
   margin: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
