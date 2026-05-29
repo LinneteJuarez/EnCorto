@@ -782,6 +782,7 @@ function loadPanel(name) {
       if (name === 'funding') {
         panel.querySelectorAll('[data-pin-carousel]').forEach(initPinCarousel)
         initPinCart(panel)
+        initFundingEdition(panel)
       }
     })
 }
@@ -811,6 +812,23 @@ function initPinCart(panel) {
       window.setTimeout(() => btn.classList.remove('is-added'), 700)
     })
   })
+}
+
+function initFundingEdition(panel) {
+  const picker = panel.querySelector('[data-funding-edition-picker]')
+  if (!picker) return
+
+  const panels = [...panel.querySelectorAll('[data-funding-edition-panel]')]
+
+  const showEdition = (editionId) => {
+    panels.forEach((el) => {
+      const match = el.dataset.fundingEditionPanel === editionId
+      el.hidden = !match
+    })
+  }
+
+  picker.addEventListener('change', () => showEdition(picker.value))
+  showEdition(picker.value)
 }
 
 function initSiteBackdrop() {

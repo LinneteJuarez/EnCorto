@@ -1365,31 +1365,149 @@ button.pin-carousel__btn:hover {
 
 .funding-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 24px;
   align-items: start;
   min-width: 0;
   width: 100%;
 }
 
-.shop-section {
+.funding-box {
   min-width: 0;
   width: 100%;
+  padding: 16px;
+  background: color-mix(in srgb, var(--color-verde) 12%, transparent);
+  border-radius: 24px;
+  box-sizing: border-box;
 }
 
-.carousel-section {
-  margin-bottom: 32px;
-}
-
-.carousel-section:last-child {
-  margin-bottom: 0;
-}
-
-.carousel-section__title {
-  margin: 0 0 16px;
+.funding-box__title {
+  margin: 0 0 8px;
   font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: 0.02em;
+  color: var(--color-rosa);
+}
+
+.funding-box__edition-name {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-negro) 72%, transparent);
+}
+
+.funding-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.funding-edition-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  background: color-mix(in srgb, var(--color-blanco) 62%, transparent);
+  border-radius: 20px;
+}
+
+.funding-edition-toolbar__label {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-negro);
+}
+
+.funding-edition-picker {
+  flex: 1 1 12rem;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-negro);
+  background: color-mix(in srgb, var(--color-blanco) 50%, transparent);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: 0.65em;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.funding-edition-picker:hover:not(:disabled) {
+  border-color: var(--color-negro);
+}
+
+.funding-edition-picker:focus {
+  outline: none;
+  border-color: var(--color-negro);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent, var(--color-funding)) 55%, transparent);
+}
+
+.funding-bottom-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  min-width: 0;
+}
+
+.funding-edition-archived {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-negro) 68%, transparent);
+}
+
+.gallery-carousel .pin-carousel__viewport {
+  min-height: clamp(180px, 32vw, 260px);
+}
+
+.gallery-placeholder {
+  margin: 0;
+  width: min(100%, 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gallery-placeholder__frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: var(--border-width) dashed color-mix(in srgb, var(--color-negro) 35%, transparent);
+  border-radius: 16px;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-blanco) 88%, var(--accent, #e6d255) 12%) 0 12px,
+      color-mix(in srgb, var(--color-blanco) 72%, var(--accent, #e6d255) 28%) 12px 24px
+    );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-negro) 8%, transparent);
+}
+
+.gallery-placeholder--archived .gallery-placeholder__frame {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-blanco) 92%, transparent) 0 12px,
+      color-mix(in srgb, var(--color-blanco) 78%, transparent) 12px 24px
+    );
+}
+
+.gallery-placeholder__caption {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-negro) 75%, transparent);
 }
 
 /* Carrusel tipo Owl: una diapositiva, flechas y puntos */
@@ -1643,16 +1761,42 @@ button.pin-carousel__btn:hover {
   line-height: 1.2;
 }
 
+.pin-info__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .pin-info__price {
   font-weight: 700;
   font-size: 0.78rem;
   letter-spacing: 0.02em;
 }
 
+.pin-cart-btn--inline {
+  position: static;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.pin-product-host:hover .pin-cart-btn--inline,
+.pin-product-host:focus-within .pin-cart-btn--inline {
+  opacity: 1;
+  transform: none;
+}
+
 .pin-product:hover .pin-info,
-.pin-product:focus-visible .pin-info {
+.pin-product:focus-visible .pin-info,
+.pin-product-host:hover .pin-info,
+.pin-product-host:focus-within .pin-info {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 .pin-cart-btn {
@@ -1760,14 +1904,46 @@ button.pin-cart-btn.is-added {
   }
 }
 
+.funding-box--donate.donation {
+  padding: 16px;
+}
+
 .donation {
-  background: color-mix(in srgb, var(--color-blanco) 52%, transparent);
-  border: none;
-  border-radius: 32px;
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.donation p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.donation__btn {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: var(--color-negro);
+  background: var(--color-blanco);
+  border: var(--border-width) solid var(--color-negro);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--color-negro);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.donation__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--color-negro);
+}
+
+.donation__btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-negro);
 }
 
 .donation textarea {
@@ -2189,6 +2365,16 @@ button.pin-cart-btn.is-added {
   .funding-layout {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  .funding-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .funding-edition-toolbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .forum-section {
