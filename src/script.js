@@ -96,17 +96,6 @@ function formatTodayLong(timeZone) {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
-function formatArchivoDateLabel(dayKey) {
-  const [y, m, d] = dayKey.split('-').map(Number)
-  const date = new Date(y, m - 1, d)
-  return date.toLocaleDateString('es-MX', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
-
 function uniqueArchiveDates(posts) {
   const today = todayCalendarKey(NOTICIAS_TZ)
   const keys = new Set()
@@ -167,43 +156,119 @@ function initSidebarScroll(panel) {
   root._sidebarScrollApply?.()
 }
 
+function calendarDayBefore(dayKey) {
+  const [y, m, d] = dayKey.split('-').map(Number)
+  const dt = new Date(y, m - 1, d)
+  dt.setDate(dt.getDate() - 1)
+  const yy = dt.getFullYear()
+  const mm = String(dt.getMonth() + 1).padStart(2, '0')
+  const dd = String(dt.getDate()).padStart(2, '0')
+  return `${yy}-${mm}-${dd}`
+}
+
+function setArchivoPanelHasSelection(panel, hasSelection) {
+  const mainEl = panel.querySelector('[data-archivo-main]')
+  const promptEl = panel.querySelector('[data-archivo-prompt]')
+  const hintEl = panel.querySelector('[data-archivo-date-hint]')
+
+  if (mainEl) mainEl.hidden = !hasSelection
+  if (promptEl) promptEl.hidden = hasSelection
+  if (hintEl && hasSelection) hintEl.hidden = true
+}
+
+function clearArchivoNewsGrids(panel) {
+  panel.querySelectorAll('.subpanel .news-grid').forEach((grid) => {
+    grid.innerHTML = ''
+  })
+}
+
+function clearArchivoSelection(panel) {
+  delete panel.dataset.selectedArchivoDate
+  const picker = panel.querySelector('[data-archivo-date-picker]')
+  if (picker) picker.value = ''
+  setArchivoPanelHasSelection(panel, false)
+  clearArchivoNewsGrids(panel)
+}
+
+function showArchivoInvalidDate(panel) {
+  const hintEl = panel.querySelector('[data-archivo-date-hint]')
+  if (hintEl) hintEl.hidden = false
+  setArchivoPanelHasSelection(panel, false)
+  clearArchivoNewsGrids(panel)
+}
+
+function selectArchivoDate(panel, dayKey) {
+  panel.dataset.selectedArchivoDate = dayKey
+
+  const picker = panel.querySelector('[data-archivo-date-picker]')
+  if (picker && picker.value !== dayKey) picker.value = dayKey
+
+  setArchivoPanelHasSelection(panel, true)
+  renderNoticiasIntoPanel(panel, 'archivo').catch((err) => {
+    console.warn('Error cargando archivo:', err)
+  })
+}
+
 function initArchivoDates(panel, archivePosts) {
-  const container = panel.querySelector('[data-archivo-dates]')
-  if (!container) return
+  const picker = panel.querySelector('[data-archivo-date-picker]')
+  if (!picker) return
 
   const dates = uniqueArchiveDates(archivePosts)
+  panel.dataset.archivoDateList = dates.join(',')
+
+  const today = todayCalendarKey(NOTICIAS_TZ)
+  const maxDay = calendarDayBefore(today)
+  const hintEl = panel.querySelector('[data-archivo-date-hint]')
+  const defaultHint = 'No hay noticias archivadas para esta fecha.'
+
+  picker.disabled = false
+  picker.max = maxDay
+  picker.min = dates.length ? dates[dates.length - 1] : ''
+
   if (!dates.length) {
-    container.innerHTML = '<p class="panel-sidebar__empty">No hay fechas en el archivo.</p>'
-    delete panel.dataset.selectedArchivoDate
+    picker.disabled = true
+    if (hintEl) {
+      hintEl.textContent = 'No hay fechas en el archivo.'
+      hintEl.hidden = false
+    }
+    clearArchivoSelection(panel)
     return
   }
 
-  if (!panel.dataset.selectedArchivoDate || !dates.includes(panel.dataset.selectedArchivoDate)) {
-    panel.dataset.selectedArchivoDate = dates[0]
+  if (hintEl) {
+    hintEl.textContent = defaultHint
+    hintEl.hidden = true
+  }
+
+  if (!picker.dataset.pickerReady) {
+    picker.addEventListener('change', () => {
+      const value = picker.value
+      if (hintEl) {
+        hintEl.textContent = defaultHint
+        hintEl.hidden = true
+      }
+
+      if (!value) {
+        clearArchivoSelection(panel)
+        return
+      }
+
+      const available = panel.dataset.archivoDateList?.split(',').filter(Boolean) ?? []
+      if (available.includes(value)) {
+        selectArchivoDate(panel, value)
+      } else {
+        showArchivoInvalidDate(panel)
+      }
+    })
+    picker.dataset.pickerReady = 'true'
   }
 
   const selected = panel.dataset.selectedArchivoDate
-
-  container.innerHTML = dates
-    .map(
-      (key) => `
-    <button type="button" class="archivo-date-btn${key === selected ? ' active' : ''}" data-archivo-date="${key}">
-      ${formatArchivoDateLabel(key)}
-    </button>`,
-    )
-    .join('')
-
-  container.querySelectorAll('[data-archivo-date]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      panel.dataset.selectedArchivoDate = btn.dataset.archivoDate
-      container.querySelectorAll('[data-archivo-date]').forEach((b) => {
-        b.classList.toggle('active', b === btn)
-      })
-      renderNoticiasIntoPanel(panel, 'archivo').catch((err) => {
-        console.warn('Error cargando archivo:', err)
-      })
-    })
-  })
+  if (selected && dates.includes(selected)) {
+    selectArchivoDate(panel, selected)
+  } else {
+    clearArchivoSelection(panel)
+  }
 }
 
 function initForoPanel(panel) {
@@ -659,7 +724,6 @@ function loadPanel(name) {
           .then((all) => {
             const archivePosts = filterPostsByNewsDay(all, 'archivo')
             initArchivoDates(panel, archivePosts)
-            return renderNoticiasIntoPanel(panel, name, archivePosts)
           })
           .catch((err) => {
             console.warn('Error cargando archivo:', err)
@@ -910,6 +974,11 @@ function groupByCategory(posts) {
 }
 
 async function renderNoticiasIntoPanel(panelEl, panelName, preloadedPosts) {
+  if (panelName === 'archivo' && !panelEl.dataset.selectedArchivoDate) {
+    clearArchivoNewsGrids(panelEl)
+    return
+  }
+
   const allPosts = preloadedPosts ?? (await loadNoticias())
   let posts = filterPostsByNewsDay(allPosts, panelName)
 

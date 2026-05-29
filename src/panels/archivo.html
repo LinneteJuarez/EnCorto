@@ -1,6 +1,17 @@
 <div class="panel-layout">
   <aside class="panel-sidebar" aria-label="Archivo">
-    <div class="archivo-dates" data-archivo-dates aria-label="Fechas anteriores"></div>
+    <div class="archivo-date-toolbar">
+      <label class="archivo-date-picker-label" for="archivo-date-picker-input">Elegir fecha</label>
+      <input
+        type="date"
+        id="archivo-date-picker-input"
+        class="archivo-date-picker"
+        data-archivo-date-picker
+      />
+      <p class="archivo-date-hint" data-archivo-date-hint hidden>
+        No hay noticias archivadas para esta fecha.
+      </p>
+    </div>
     <nav class="subtabs subtabs--sidebar" aria-label="Categorías">
       <button type="button" class="subtab active" data-sub="global">Global</button>
       <button type="button" class="subtab" data-sub="politica">Política</button>
@@ -11,7 +22,10 @@
       <button type="button" class="subtab" data-sub="felices">Noticias Felices</button>
     </nav>
   </aside>
-  <div class="panel-main">
+  <p class="archivo-prompt" data-archivo-prompt>
+    Selecciona una fecha en el calendario para ver las noticias del archivo.
+  </p>
+  <div class="panel-main" data-archivo-main hidden>
 
   <div class="subpanel active" data-subpanel="global">
     <div class="news-grid"></div>

@@ -183,6 +183,8 @@ body[data-bg-section='archivo'] {
   pointer-events: none;
   background-color: var(--color-blanco);
   background-image:
+  url('./data/tramado.png'),
+
   url('./data/noise.png'),
     radial-gradient(
       circle 90vmax at var(--bg-x) var(--bg-y),
@@ -190,10 +192,10 @@ body[data-bg-section='archivo'] {
       color-mix(in srgb, var(--bg-tone-2) 40%, var(--color-blanco)) 48%,
       color-mix(in srgb, var(--bg-tone-3) 45%, var(--color-blanco)) 100%
     );
-  background-size:auto, cover;
-  background-position: center, center;
-  background-repeat: repeat, no-repeat;
-  background-blend-mode: multiply, normal;
+  background-size: auto, auto, cover;
+  background-position: center, center, center;
+  background-repeat: no repeat, repeat, no-repeat;
+  background-blend-mode: multiply, multiply, normal;
 }
 .layout-root {
   display: flex;
@@ -573,60 +575,76 @@ nav {
   position: relative;
 }
 
-.archivo-dates {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 14px;
+.archivo-date-toolbar {
+  margin-bottom: 12px;
 }
 
-.archivo-date-btn {
+.archivo-date-picker-label {
   display: block;
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-negro);
+}
+
+.archivo-date-picker {
+  box-sizing: border-box;
   width: 100%;
   margin: 0;
   padding: 10px 12px;
   font-family: inherit;
   font-size: 0.92rem;
-  font-weight: 800;
-  line-height: 1.35;
-  text-align: left;
-  text-transform: capitalize;
+  font-weight: 600;
   color: var(--color-negro);
-  cursor: pointer;
-  background: color-mix(in srgb, var(--color-archivo) 22%, transparent);
+  background: var(--color-blanco);
   border: var(--border-width) solid var(--color-border);
   border-radius: 0.65em;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.archivo-date-btn:hover {
-  background: color-mix(in srgb, var(--color-archivo) 38%, transparent);
+.archivo-date-picker:hover:not(:disabled) {
+  border-color: var(--color-negro);
 }
 
-.archivo-date-btn.active {
-  background: color-mix(in srgb, var(--color-archivo) 48%, var(--color-blanco));
-  box-shadow: inset 0 0 0 2px var(--color-negro);
+.archivo-date-picker:focus {
+  outline: none;
+  border-color: var(--color-negro);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--color-archivo) 55%, transparent);
 }
 
-button.archivo-date-btn,
-button.archivo-date-btn:hover,
-button.archivo-date-btn:active,
-button.archivo-date-btn:focus-visible {
-  text-transform: capitalize;
-  letter-spacing: normal;
-  font-weight: 800;
-  font-style: normal;
-  opacity: 1;
-  transform: none;
+.archivo-date-picker:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-button.archivo-date-btn:hover {
-  box-shadow: none;
+.archivo-date-hint {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-negro) 72%, transparent);
 }
 
-button.archivo-date-btn.active,
-button.archivo-date-btn.active:hover {
-  box-shadow: inset 0 0 0 2px var(--color-negro);
+.archivo-prompt {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  padding: 2rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--color-negro);
+}
+
+.archivo-prompt[hidden],
+#panel-archivo [data-archivo-main][hidden] {
+  display: none;
 }
 
 .subtabs {
@@ -1996,15 +2014,18 @@ button.pin-cart-btn.is-added {
     width: 100%;
   }
 
-  .archivo-dates {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    margin-bottom: 12px;
+  .archivo-date-toolbar {
+    margin-bottom: 10px;
   }
 
-  .archivo-date-btn {
+  .archivo-date-picker {
     font-size: 0.85rem;
     padding: 8px 10px;
+  }
+
+  .archivo-prompt {
+    font-size: 0.95rem;
+    padding: 1.5rem 1rem;
   }
 
   .subtabs {
