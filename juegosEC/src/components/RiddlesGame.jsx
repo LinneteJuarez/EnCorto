@@ -19,7 +19,7 @@ export function RiddlesGame({ onBack }) {
 
   if (fin) {
     return (
-      <div>
+      <div className="ec-game-screen">
         <header className="ec-topbar">
           <button type="button" className="ec-btn" onClick={onBack}>
             ← Juegos
@@ -57,7 +57,7 @@ export function RiddlesGame({ onBack }) {
   }
 
   return (
-    <div>
+    <div className="ec-game-screen">
       <header className="ec-topbar">
         <button type="button" className="ec-btn" onClick={onBack}>
           ← Juegos

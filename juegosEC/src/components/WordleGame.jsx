@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import confetti from 'canvas-confetti'
 import { definicionDe, palabraDelDia, PALABRAS_VALIDAS } from '../data/palabras5'
 import { combinarTeclado, evaluarIntento } from '../lib/wordleLogic'
 
@@ -44,8 +45,18 @@ async function compartirResultado(shareBtn) {
   }
 }
 
+function lanzarConfettiVictoria() {
+  const base = { spread: 72, ticks: 140, startVelocity: 38, zIndex: 200 }
+  confetti({ ...base, particleCount: 90, origin: { x: 0.25, y: 0.55 } })
+  confetti({ ...base, particleCount: 90, origin: { x: 0.75, y: 0.55 } })
+  window.setTimeout(() => {
+    confetti({ ...base, particleCount: 70, origin: { x: 0.5, y: 0.35 }, scalar: 0.9 })
+  }, 180)
+}
+
 export function WordleGame({ onBack }) {
   const solucion = useMemo(() => palabraDelDia(), [])
+  const definicion = useMemo(() => definicionDe(solucion), [solucion])
   const [intentos, setIntentos] = useState([])
   const [actual, setActual] = useState('')
   const [estados, setEstados] = useState([])
@@ -110,6 +121,11 @@ export function WordleGame({ onBack }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [fin, tecla])
 
+  useEffect(() => {
+    if (fin !== 'win') return
+    lanzarConfettiVictoria()
+  }, [fin])
+
   const rendirse = () => setFin('lose')
 
   return (
@@ -125,7 +141,7 @@ export function WordleGame({ onBack }) {
       </header>
 
       <div className="wordle-center">
-        <p className="wordle-day-label">Palabra del día (UTC)</p>
+        <p className="wordle-day-label">Palabra del día</p>
         <div className="wordle-board" aria-label="Tablero">
           {Array.from({ length: MAX }, (_, fila) => {
             const pal = intentos[fila]
@@ -182,7 +198,7 @@ export function WordleGame({ onBack }) {
               {victoria ? '¡Ganaste!' : 'Fin de la partida'}
             </p>
             <h2 className="wm-word">{solucion}</h2>
-            <p className="wm-def">{definicionDe(solucion)}</p>
+            {definicion ? <p className="wm-def">{definicion}</p> : null}
             <div className="wm-actions">
               <button type="button" className="wm-btn wm-btn--sec" onClick={onBack}>
                 ← Juegos

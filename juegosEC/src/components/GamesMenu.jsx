@@ -3,7 +3,7 @@ export function GamesMenu({ onPick }) {
     <div>
       <header className="ec-topbar">
         <span style={{ width: 72 }} />
-        <h1>Juegos EC</h1>
+        <h1>¡Vuelve mañana para nuevos retos!</h1>
         <span style={{ width: 72 }} />
       </header>
       <div id="games-menu">

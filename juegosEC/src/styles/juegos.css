@@ -1,9 +1,24 @@
 .ec-juegos {
-  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
   box-sizing: border-box;
   font-family: var(--font-sans);
-  background: var(--color-juegos);
+  background: color-mix(in srgb, var(--color-juegos) 35%, transparent);
   color: var(--color-negro);
+}
+
+/* Pantalla de juego a altura completa (menú, Wordle, adivinanzas, pintar) */
+.ec-game-screen,
+.wordle-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
 }
 
 .ec-juegos * {
@@ -16,15 +31,14 @@
   justify-content: space-between;
   padding: 0 16px;
   height: 48px;
-  background: var(--color-blanco);
-  border-bottom: var(--border-default);
+  background: color-mix(in srgb, var(--color-juegos) 35%, transparent);
   flex-shrink: 0;
 }
 
 .ec-topbar h1 {
   margin: 0;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -40,6 +54,7 @@
   padding: 6px 12px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
+  border-radius: 16px;
 }
 
 .ec-btn:hover {
@@ -56,7 +71,8 @@
 /* —— Menú —— */
 #games-menu {
   width: 100%;
-  min-height: calc(100vh - 48px);
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +89,7 @@
 
 .game-card {
   flex: 1;
-  background: var(--color-blanco);
+  background: var(--color-blanco) 95%;
   border: var(--border-default);
   display: flex;
   flex-direction: column;
@@ -83,6 +99,7 @@
   font: inherit;
   color: inherit;
   appearance: none;
+  border-radius: 8px;
 }
 
 .game-card:hover {
@@ -98,6 +115,7 @@
   align-items: center;
   justify-content: center;
   min-height: 120px;
+  border-radius: 8px;
 }
 
 .gc-letters {
@@ -155,6 +173,8 @@
   letter-spacing: -0.04em;
   text-transform: uppercase;
   margin: 0;
+  color: var(--color-rosa);
+  text-shadow: 0 1px 1px var(--color-negro);
 }
 
 .gc-desc {
@@ -167,7 +187,7 @@
 }
 
 .gc-play {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -178,20 +198,17 @@
   cursor: pointer;
   align-self: flex-start;
   margin-top: 10px;
+  border-radius: 16px;
   transition: background 0.15s;
 }
 
 .gc-play:hover {
   background: var(--color-rosa);
+  font-weight: 700;
+  font-style: italic;
 }
 
 /* —— Wordle —— */
-.wordle-screen {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 48px);
-}
-
 .wordle-center {
   flex: 1;
   display: flex;
@@ -235,6 +252,7 @@
   font-weight: 900;
   font-size: 22px;
   text-transform: uppercase;
+  border-radius: 8px;
   transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
     transform 0.1s ease;
 }
@@ -289,6 +307,7 @@
   min-height: 18px;
   margin: 0;
   text-align: center;
+  border-radius: 8px;
 }
 
 .wordle-keyboard {
@@ -297,6 +316,7 @@
   gap: 6px;
   align-items: center;
   padding-bottom: 8px;
+  border-radius: 8px;
 }
 
 .wk-row {
@@ -320,6 +340,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
+  border-radius: 8px;
 }
 
 .wk-key--wide {
@@ -327,7 +348,13 @@
   font-size: 9px;
   letter-spacing: 0.06em;
 }
-
+.wk-key:hover {
+  transform: scale(1);
+  background: color-mix(in srgb, var(--color-blanco) 32%, var(--color-azul));
+  border-color: var(--color-negro);
+  font-weight: 900;
+  font-style: italic;
+}
 .wk-key:active {
   transform: scale(0.94);
 }
@@ -448,6 +475,8 @@
 
 /* —— Adivinanzas —— */
 .riddles-wrap {
+  flex: 1 1 auto;
+  width: 100%;
   max-width: 520px;
   margin: 0 auto;
   padding: 20px 20px 32px;
@@ -476,10 +505,13 @@
   font-family: var(--font-sans);
   font-size: 14px;
   transition: background 0.15s, border-color 0.15s;
+  border-radius: 16px;
 }
 
 .r-opt:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-blanco) 92%, var(--color-negro));
+  background: color-mix(in srgb, var(--color-blanco) 62%, var(--color-rosa));
+  font-weight: 900;
+  font-style: italic;
 }
 
 .r-opt:disabled {
@@ -488,7 +520,7 @@
 }
 
 .r-opt--ok {
-  border-color: #2e7d32;
+  border-color: var(--color-verde);
   background: rgba(46, 125, 50, 0.12);
 }
 
@@ -514,22 +546,26 @@
 
 /* —— Paint —— */
 .paint-wrap {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  width: 100%;
   max-width: 720px;
   margin: 0 auto;
   padding: 12px 16px 24px;
   gap: 10px;
+  min-height: 0;
 }
 
 .paint-tema {
-  background: var(--color-blanco);
-  border: var(--border-default);
+  background: var(--color-azul);
+  box-shadow: 0 2px 0 var(--color-negro);
   padding: 12px 14px;
   font-size: 15px;
   font-weight: 700;
   text-align: center;
+  border-radius: 16px;
 }
 
 .paint-toolbar {
@@ -540,24 +576,263 @@
   justify-content: center;
 }
 
+.paint-toolbar__range {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.paint-msg {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.55);
+}
+
 .paint-toolbar input[type='color'] {
   width: 44px;
   height: 36px;
   border: var(--border-default);
   padding: 2px;
   cursor: pointer;
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-blanco) 25%, transparent);
+  border-radius: 64px;
 }
 
 .paint-canvas {
   touch-action: none;
+  flex: 1 1 auto;
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
-  height: min(52vh, 420px);
+  min-height: 160px;
+  height: auto;
   border: var(--border-default);
   background: var(--color-blanco);
   cursor: crosshair;
+  border-radius: 8px;
+}
+
+.paint-gallery {
+  flex-shrink: 0;
+  margin-top: 4px;
+  padding: 12px 0 0;
+  border-top: var(--border-default);
+}
+
+.paint-gallery__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.paint-gallery__title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-rosa);
+}
+
+.paint-gallery__count {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.paint-gallery__empty {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.55);
+  background: color-mix(in srgb, var(--color-blanco) 55%, transparent);
+  border: var(--border-default);
+}
+
+.paint-gallery__list {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0 2px 4px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.paint-gallery__item {
+  position: relative;
+  flex: 0 0 auto;
+  width: 108px;
+  scroll-snap-align: start;
+  background: var(--color-blanco);
+  border: var(--border-default);
+  border-radius: 8px;
+}
+
+.paint-gallery__thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+  color: inherit;
+}
+
+.paint-gallery__thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--color-blanco);
+  border-radius: 8px 8px 0 0;
+}
+
+.paint-gallery__thumb:hover img {
+  opacity: 0.92;
+}
+
+.paint-gallery__caption {
+  margin: 0;
+  padding: 6px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.paint-gallery__del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 900;
+  border: var(--border-default);
+  background: var(--color-blanco);
+  cursor: pointer;
+  border-radius: 64px;
+}
+
+.paint-gallery__del:hover {
+  background: var(--color-rosa);
+  border-color: var(--color-rosa);
+  color: var(--color-blanco);
+}
+
+/* —— Lightbox / carrusel galería Pintar —— */
+.paint-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--color-juegos) 55%, rgba(0, 0, 0, 0.45));
+  backdrop-filter: blur(4px);
+}
+
+.paint-lightbox__panel {
+  position: relative;
+  width: min(96vw, 880px);
+  max-height: min(92vh, 720px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 18px 16px;
+  background: var(--color-blanco);
+  border: var(--border-width-modal) solid var(--color-border);
+  box-shadow: 8px 8px 0 var(--color-negro);
+}
+
+.paint-lightbox__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.paint-lightbox__counter {
+  margin: 0;
+  padding-right: 88px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.paint-lightbox__stage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.paint-lightbox__figure {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.paint-lightbox__figure img {
+  display: block;
+  width: 100%;
+  max-height: min(58vh, 520px);
+  object-fit: contain;
+  background: var(--color-blanco);
+  border: var(--border-default);
+}
+
+.paint-lightbox__caption {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.paint-lightbox__nav {
+  flex-shrink: 0;
+  min-width: 40px;
+  height: 48px;
+  padding: 0 10px;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.paint-lightbox__nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.paint-lightbox__actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 @media (max-width: 768px) {

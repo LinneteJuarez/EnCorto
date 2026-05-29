@@ -19,27 +19,48 @@ const CINCO_LETRAS = palabrasRaw
 export const PALABRAS_ORDENADAS = [...new Set(CINCO_LETRAS)].sort()
 export const PALABRAS_VALIDAS = new Set(PALABRAS_ORDENADAS)
 
-function isoUTC(d = new Date()) {
-  const y = d.getUTCFullYear()
-  const m = String(d.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(d.getUTCDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+function mulberry32(seed) {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
 }
 
-function hash32(s) {
-  let h = 0
-  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0
-  return h
+function shuffleIndices(length, seed) {
+  const indices = Array.from({ length }, (_, i) => i)
+  const rng = mulberry32(seed)
+  for (let i = length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[indices[i], indices[j]] = [indices[j], indices[i]]
+  }
+  return indices
+}
+
+/** Índices mezclados una vez: evita rachas alfabéticas (el JSON viene ordenado). */
+const INDICES_MEZCLADOS = shuffleIndices(PALABRAS_ORDENADAS.length, 0x3ec0e705)
+
+function diasDesdeEpoch(d = new Date()) {
+  return Math.floor(
+    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) / 86_400_000,
+  )
 }
 
 export function palabraDelDia(d = new Date()) {
   const n = PALABRAS_ORDENADAS.length
   if (!n) return 'PERRO'
-  const i = Math.abs(hash32(`encorto-wordle|${isoUTC(d)}`)) % n
+  const slot = ((diasDesdeEpoch(d) % n) + n) % n
+  const i = INDICES_MEZCLADOS[slot]
   return PALABRAS_ORDENADAS[i]
 }
 
-export function definicionDe(p) {
-  void p
-  return 'Palabra válida en español (listado amplio; sin definición enlazada).'
+/** Definición opcional por palabra; null si no hay texto que mostrar. */
+const DEFINICIONES = Object.freeze({})
+
+export function definicionDe(palabra) {
+  const key = palabra?.toUpperCase?.() ?? ''
+  const def = DEFINICIONES[key]
+  return typeof def === 'string' && def.trim() ? def.trim() : null
 }

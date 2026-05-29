@@ -175,27 +175,42 @@ body[data-bg-section='archivo'] {
   --bg-tone-3: color-mix(in srgb, var(--color-azul) 55%, var(--color-blanco));
 }
 
-/* Capa fija detrás de todo el layout (gradiente + papel) */
+/* Capa fija detrás de todo el layout (gradiente + noise + tramado esquina) */
 #site-backdrop {
   position: fixed;
   inset: 0;
   z-index: var(--z-backdrop);
   pointer-events: none;
+  /* Longitud visible del tramado2 a lo largo del borde izquierdo (ya rotado) */
+  --bg-corner-texture-l: min(48vh, 720px);
   background-color: var(--color-blanco);
   background-image:
-  url('./data/tramado.png'),
-
-  url('./data/noise.png'),
+    url('./data/noise.png'),
     radial-gradient(
       circle 90vmax at var(--bg-x) var(--bg-y),
       color-mix(in srgb, var(--bg-tone-1) 72%, var(--color-blanco)) 0%,
       color-mix(in srgb, var(--bg-tone-2) 40%, var(--color-blanco)) 48%,
       color-mix(in srgb, var(--bg-tone-3) 45%, var(--color-blanco)) 100%
     );
-  background-size: auto, auto, cover;
-  background-position: center, center, center;
-  background-repeat: no repeat, repeat, no-repeat;
-  background-blend-mode: multiply, multiply, normal;
+  background-size: auto, cover;
+  background-position: center, center;
+  background-repeat: repeat, no-repeat;
+  background-blend-mode:multiply, normal;
+}
+#site-backdrop::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url('./data/tramado2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: rotate(180deg);
+  opacity: 0.5; 
+  filter:blur(1.25px);
+  mix-blend-mode: overlay;
 }
 .layout-root {
   display: flex;
@@ -383,7 +398,7 @@ nav {
   width: 100%;
   min-height: min(85vh, 720px);
   border: 0;
-  background: var(--color-blanco);
+  background: color-mix(in srgb, var(--color-blanco) 75%, transparent);
 }
 
 #panel-foro {
@@ -598,7 +613,7 @@ nav {
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--color-negro);
-  background: var(--color-blanco);
+  background:  color-mix(in srgb, var(--color-blanco) 50%, transparent);
   border: var(--border-width) solid var(--color-border);
   border-radius: 0.65em;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
