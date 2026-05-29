@@ -252,6 +252,8 @@ async function upsertNoticiaFromMd(filePath) {
   const title = String(front.title || '').trim() || path.basename(filePath, path.extname(filePath))
   const date = toIsoDateTime(front.date, path.basename(filePath))
   const category = normCategory(front.category)
+  const porQueImporta = String(front.porQueImporta || front.por_que_importa || '').trim()
+  const queSigue = String(front.queSigue || front.que_sigue || '').trim()
   const body = markdownToPortableText(parsed.content || '')
 
   const slugBase = path
@@ -270,6 +272,8 @@ async function upsertNoticiaFromMd(filePath) {
     title,
     date,
     category,
+    ...(porQueImporta ? {porQueImporta} : {}),
+    ...(queSigue ? {queSigue} : {}),
     body,
     ...(thumbnail ? {thumbnail} : {}),
   }

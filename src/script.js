@@ -537,37 +537,40 @@ function initForoPanel(panel) {
   ===================================================== */
 
 const hoyPanel = document.getElementById('panel-hoy')
+const archivoPanel = document.getElementById('panel-archivo')
 
-hoyPanel.addEventListener('click', (e) => {
-  // Botón cerrar
-  if (e.target.closest('.news-close')) {
-    e.stopPropagation()
+function initNewsCardExpansion(panelEl) {
+  if (!panelEl || panelEl.dataset.newsCardsInit === 'true') return
+  panelEl.dataset.newsCardsInit = 'true'
+
+  panelEl.addEventListener('click', (e) => {
     const card = e.target.closest('.news-card')
-    card?.classList.remove('open')
-    return
-  }
+    if (!card) return
 
-  // Click en card
-  const card = e.target.closest('.news-card')
-  if (!card) return
+    const subpanel = card.closest('.subpanel')
+    const isOpen = card.classList.contains('open')
 
-  const subpanel = card.closest('.subpanel')
-  const isOpen = card.classList.contains('open')
+    subpanel?.querySelectorAll('.news-card.open').forEach((c) => {
+      c.classList.remove('open')
+      c.setAttribute('aria-expanded', 'false')
+    })
+    if (!isOpen) {
+      card.classList.add('open')
+      card.setAttribute('aria-expanded', 'true')
+    }
+  })
 
-  // cerrar otras
-  subpanel.querySelectorAll('.news-card.open').forEach((c) => c.classList.remove('open'))
+  panelEl.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return
+    const card = e.target.closest('.news-card')
+    if (!card) return
+    e.preventDefault()
+    card.click()
+  })
+}
 
-  if (!isOpen) card.classList.add('open')
-})
-
-// Soporte teclado
-hoyPanel.addEventListener('keydown', (e) => {
-  if (e.key !== 'Enter' && e.key !== ' ') return
-  const card = e.target.closest('.news-card')
-  if (!card) return
-  e.preventDefault()
-  card.click()
-})
+initNewsCardExpansion(hoyPanel)
+initNewsCardExpansion(archivoPanel)
 
 /* =====================================================
   CARGA DE PANELES (HTML externo)
@@ -888,23 +891,45 @@ function formatDate(isoLike) {
   return d.toLocaleDateString('es-MX', {year: 'numeric', month: 'short', day: '2-digit'})
 }
 
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function buildNewsSubtitleHtml(label, text) {
+  const clean = String(text ?? '').trim()
+  if (!clean) return ''
+  return `
+    <div class="news-subtitle">
+      <p class="news-subtitle__label">${label}</p>
+      <p class="news-subtitle__text">${escapeHtml(clean)}</p>
+    </div>
+  `.trim()
+}
+
 function buildNewsCardHtml(post) {
   const categoryLabel = CATEGORY_LABELS[post.category] ?? post.category ?? ''
   const dateLabel = formatDate(post.date)
   const thumb = post.thumbnail
     ? `<img src="${post.thumbnail}" alt="" loading="lazy" decoding="async" />`
     : `<span class="news-thumb-label">IMG</span>`
+  const porQueImporta = post.porQueImporta || post.excerpt || ''
+  const queSigue = post.queSigue || ''
+  const extraHtml = post.html?.trim() ? `<div class="news-extra">${post.html}</div>` : ''
 
   return `
-    <article class="news-card" tabindex="0">
+    <article class="news-card" tabindex="0" aria-expanded="false">
       <div class="news-thumb">${thumb}</div>
       <div class="news-body">
         <p class="news-section-tag">${categoryLabel}${dateLabel ? ` · ${dateLabel}` : ''}</p>
-        <h2 class="news-title">${post.title ?? 'Sin título'}</h2>
-        <p class="news-excerpt">${post.excerpt ?? ''}</p>
-        <div class="news-expanded">
-          ${post.html ?? ''}
-          <button class="news-close">Cerrar ↑</button>
+        <h2 class="news-title">${escapeHtml(post.title ?? 'Sin título')}</h2>
+        <div class="news-subtitles">
+          ${buildNewsSubtitleHtml('¿Por qué importa?', porQueImporta)}
+          ${buildNewsSubtitleHtml('¿Qué sigue?', queSigue)}
+          ${extraHtml}
         </div>
       </div>
     </article>
@@ -933,6 +958,8 @@ async function loadNoticias() {
     title,
     date,
     category,
+    porQueImporta,
+    queSigue,
     body,
     "thumbnail": thumbnail.asset->url
   }`
@@ -948,6 +975,8 @@ async function loadNoticias() {
       date: it.date || '',
       category: it.category || 'global',
       thumbnail: it.thumbnail || '',
+      porQueImporta: String(it.porQueImporta || '').trim(),
+      queSigue: String(it.queSigue || '').trim(),
       html,
       excerpt,
     }
