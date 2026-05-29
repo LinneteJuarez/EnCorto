@@ -9,7 +9,8 @@
     "dev:all": "concurrently -n encorto,juegosEC -c cyan,magenta \"vite\" \"npm run dev --prefix juegosEC\"",
     "build": "vite build && npm run build --prefix juegosEC && node scripts/copy-juegos-ec.mjs",
     "serve": "live-server",
-    "migrate:noticias": "node scripts/migrate-md-to-sanity.cjs"
+    "migrate:noticias": "node scripts/migrate-md-to-sanity.cjs",
+    "deploy": "vercel --prod"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "live-server": "^1.2.2"
+    "live-server": "^1.2.2",
+    "vercel": "^54.6.1"
   }
 }
