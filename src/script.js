@@ -687,10 +687,47 @@ function initPinCarousel(carousel) {
   goTo(0)
 }
 
+function juegosEcLoadingMarkup() {
+  return `<div class="juegos-ec-loading" role="status" aria-live="polite">
+    <span class="juegos-ec-loading__spinner" aria-hidden="true"></span>
+    <p class="juegos-ec-loading__text">Cargando juegos…</p>
+  </div>`
+}
+
 function initJuegosEcIframe(panel) {
   const frame = panel.querySelector('iframe.juegos-ec-frame')
+  const loader = panel.querySelector('.juegos-ec-loading')
   if (!frame || frame.dataset.srcSet === 'true') return
+
   const devUrl = import.meta.env?.VITE_JUEGOS_EC_DEV_URL || 'http://localhost:5174/'
+
+  const hideLoader = () => {
+    loader?.classList.add('is-hidden')
+    loader?.setAttribute('aria-hidden', 'true')
+    frame.classList.remove('is-loading')
+    panel.classList.remove('is-loading-juegos')
+  }
+
+  const showLoadError = () => {
+    if (!loader || loader.classList.contains('is-hidden')) return
+    const hint = import.meta.env?.DEV
+      ? ' En desarrollo, ejecuta <code>npm run dev:juegos</code> o <code>npm run dev:all</code>.'
+      : ''
+    loader.innerHTML = `<p class="juegos-ec-loading__text juegos-ec-loading__text--error">No se pudieron cargar los juegos.${hint}</p>`
+    loader.classList.add('is-error')
+    frame.classList.remove('is-loading')
+    panel.classList.remove('is-loading-juegos')
+  }
+
+  frame.addEventListener('load', hideLoader, {once: true})
+  const failTimer = window.setTimeout(showLoadError, 20000)
+
+  frame.addEventListener(
+    'load',
+    () => window.clearTimeout(failTimer),
+    {once: true},
+  )
+
   frame.src = import.meta.env?.DEV ? devUrl : './juegos-ec/index.html'
   frame.dataset.srcSet = 'true'
 }
@@ -698,6 +735,11 @@ function initJuegosEcIframe(panel) {
 function loadPanel(name) {
   const panel = document.getElementById(`panel-${name}`)
   if (!panel || panel.dataset.loaded) return
+
+  if (name === 'juegos') {
+    panel.innerHTML = juegosEcLoadingMarkup()
+    panel.classList.add('is-loading-juegos')
+  }
 
   fetch(panelMap[name])
     .then((r) => r.text())

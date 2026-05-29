@@ -1,8 +1,11 @@
 <section class="panel-inner panel-inner--juegos-ec">
+  <div class="juegos-ec-loading" role="status" aria-live="polite">
+    <span class="juegos-ec-loading__spinner" aria-hidden="true"></span>
+    <p class="juegos-ec-loading__text">Cargando juegos…</p>
+  </div>
   <iframe
-    class="juegos-ec-frame"
+    class="juegos-ec-frame is-loading"
     title="Juegos En Corto"
-    loading="lazy"
     referrerpolicy="strict-origin-when-cross-origin"
   ></iframe>
 </section>
