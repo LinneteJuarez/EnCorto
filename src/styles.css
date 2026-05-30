@@ -2168,7 +2168,59 @@ button.pin-cart-btn.is-added {
     width: min(94vw, 20rem);
   }
 }
+.slogan {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: min(100%, 77rem);
+  padding-inline: 1rem;
+  font-family: var(--font-sans);
+  font-size: 1.85rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-amarillo);
+  text-align: center;
+  box-sizing: border-box;
+  text-shadow: 0px 2px 8px rgba(33, 15, 18, 0.78);
+}
 
+.slogan-typewriter {
+  margin: 0;
+  display: inline;
+  line-height: 1.45;
+}
+
+.slogan-typewriter__text strong {
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--color-rosa);
+}
+
+.slogan-typewriter__cursor {
+  display: inline-block;
+  margin-left: 1px;
+  font-style: normal;
+  font-weight: 400;
+  animation: sloganCursorBlink 0.85s step-end infinite;
+}
+
+.slogan-typewriter__cursor.is-done {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes sloganCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slogan-typewriter__cursor {
+    display: none;
+  }
+}
 /* ================================
    RESPONSIVE (contenedores existentes)
    ================================ */

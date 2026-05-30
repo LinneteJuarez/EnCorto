@@ -21,6 +21,91 @@ function runInicioEnter(panelEl) {
   inicioEl.classList.add('is-entering')
   const cleanup = () => inicioEl.classList.remove('is-entering')
   inicioEl.addEventListener('animationend', cleanup, {once: true})
+  initSloganTypewriter(panelEl)
+}
+
+function parseSloganTypewriterSource(sourceEl) {
+  const chars = []
+
+  const walk = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      for (const ch of node.textContent) chars.push({ch, strong: false})
+      return
+    }
+    if (node.nodeName === 'STRONG') {
+      for (const ch of node.textContent) chars.push({ch, strong: true})
+      return
+    }
+    node.childNodes.forEach(walk)
+  }
+
+  sourceEl.childNodes.forEach(walk)
+  return chars
+}
+
+function renderSloganTypewriterPartial(displayEl, chars, count) {
+  displayEl.replaceChildren()
+  let strongEl = null
+
+  for (let i = 0; i < count; i++) {
+    const {ch, strong} = chars[i]
+    if (strong) {
+      if (!strongEl) {
+        strongEl = document.createElement('strong')
+        displayEl.appendChild(strongEl)
+      }
+      strongEl.appendChild(document.createTextNode(ch))
+    } else {
+      strongEl = null
+      displayEl.appendChild(document.createTextNode(ch))
+    }
+  }
+}
+
+function initSloganTypewriter(panelEl) {
+  const root = panelEl?.querySelector?.('[data-slogan-typewriter]')
+  if (!root) return
+
+  if (root._typewriterTimeout) {
+    window.clearTimeout(root._typewriterTimeout)
+    root._typewriterTimeout = null
+  }
+
+  const sourceEl = root.querySelector('.slogan-typewriter__source')
+  const displayEl = root.querySelector('.slogan-typewriter__text')
+  const cursorEl = root.querySelector('.slogan-typewriter__cursor')
+  if (!sourceEl || !displayEl) return
+
+  const chars = parseSloganTypewriterSource(sourceEl)
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  displayEl.replaceChildren()
+  cursorEl?.classList.remove('is-done')
+
+  if (reducedMotion || chars.length === 0) {
+    renderSloganTypewriterPartial(displayEl, chars, chars.length)
+    cursorEl?.classList.add('is-done')
+    return
+  }
+
+  let index = 0
+
+  const typeNext = () => {
+    index += 1
+    renderSloganTypewriterPartial(displayEl, chars, index)
+
+    if (index >= chars.length) {
+      cursorEl?.classList.add('is-done')
+      root._typewriterTimeout = null
+      return
+    }
+
+    const ch = chars[index - 1].ch
+    const delay = ch === ' ' ? 34 : ch === ',' ? 140 : ch === '.' ? 280 : 52
+    root._typewriterTimeout = window.setTimeout(typeNext, delay)
+  }
+
+  root._typewriterTimeout = window.setTimeout(typeNext, 1500)
 }
 
 tabs.forEach((tab) => {
