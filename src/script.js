@@ -17,10 +17,10 @@ function getActivePanelName() {
 function runInicioEnter(panelEl) {
   const inicioEl = panelEl?.querySelector?.('.inicio')
   if (!inicioEl) return
-  inicioEl.classList.remove('is-leaving')
+  inicioEl.classList.remove('is-leaving', 'is-entering')
+  void inicioEl.offsetWidth
   inicioEl.classList.add('is-entering')
-  const cleanup = () => inicioEl.classList.remove('is-entering')
-  inicioEl.addEventListener('animationend', cleanup, {once: true})
+  window.setTimeout(() => inicioEl.classList.remove('is-entering'), 2100)
   initSloganTypewriter(panelEl)
 }
 
